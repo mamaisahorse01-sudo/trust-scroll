@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>The Trust Spectrum — The French Revolution</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- Lenis smooth scroll -->
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<style>
+/* ══════════════════════════════════════
+   TOKENS
+══════════════════════════════════════ */
+:root {
+  --black:   #05050a;
+  --off-w:   #f0ede4;
+  --warm-w:  #e2ddd0;
+  --grey:    #58564e;
+  --dim:     rgba(240,237,228,0.45);
+  --gold:    #c8b89a;
+  --gold-dk: #8a7a62;
+  --red:     #c8342a;
+  --dot-in:  #e8724a;
+  --dot-cit: #7b8fe0;
+  --dot-hum: #4db890;
+  --fd: 'Cormorant Garamond', Georgia, serif;
+  --fm: 'DM Mono', monospace;
+  --fb: 'DM Sans', sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;}
+body{background:var(--black);color:var(--off-w);font-family:var(--fb);overflow-x:hidden;}
+
+/* ══════════════════════════════════════
+   PROGRESS BAR
+══════════════════════════════════════ */
+#pb{
+  position:fixed;top:0;left:0;height:2px;width:0%;
+  background:linear-gradient(90deg,var(--dot-in),var(--dot-cit),var(--dot-hum));
+  z-index:500;pointer-events:none;transition:width .08s linear;
+}
+
+/* ══════════════════════════════════════
+   LANG TOGGLE
+══════════════════════════════════════ */
+#lang-bar{
+  position:fixed;top:0;left:0;right:0;z-index:400;
+  display:flex;justify-content:flex-end;padding:16px 20px;
+  background:linear-gradient(to bottom,rgba(5,5,10,.9) 0%,transparent 100%);
+  pointer-events:none;
+}
+#lang-toggle{
+  display:flex;border:1px solid rgba(200,184,154,.3);border-radius:3px;
+  overflow:hidden;pointer-events:all;
+}
+.lb{
+  background:transparent;border:none;padding:6px 14px;
+  font-family:var(--fm);font-size:10px;letter-spacing:.15em;
+  color:var(--grey);cursor:pointer;transition:all .2s;
+}
+.lb.on{background:var(--gold);color:var(--black);}
+
+/* ══════════════════════════════════════
+   TIMELINE
+══════════════════════════════════════ */
+#tl{
+  position:fixed;left:20px;top:50%;transform:translateY(-50%);
+  z-index:300;display:flex;flex-direction:column;align-items:flex-start;
+}
+.tl-i{display:flex;flex-direction:column;align-items:flex-start;position:relative;}
+.tl-d{
+  width:7px;height:7px;border-radius:50%;
+  border:1.5px solid rgba(200,184,154,.2);background:transparent;
+  transition:all .4s;flex-shrink:0;
+}
+.tl-d.on{border-color:var(--gold);background:var(--gold);box-shadow:0 0 8px rgba(200,184,154,.4);}
+.tl-d.done{border-color:rgba(200,184,154,.35);background:rgba(200,184,154,.15);}
+.tl-c{width:1px;height:44px;margin-left:3px;background:rgba(200,184,154,.12);position:relative;overflow:hidden;}
+.tl-cf{position:absolute;top:0;left:0;right:0;height:0%;background:var(--gold);transition:height .5s ease;}
+.tl-l{
+  position:absolute;left:16px;top:-2px;
+  font-family:var(--fm);font-size:8px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(200,184,154,.2);white-space:nowrap;transition:color .4s;pointer-events:none;
+}
+.tl-l.on{color:var(--gold);}
+@media(max-width:600px){#tl{left:10px;}.tl-l{display:none;}.tl-c{height:30px;}}
+
+/* ══════════════════════════════════════
+   GLOBAL FILM GRAIN + VIGNETTE
+══════════════════════════════════════ */
+#grain{
+  position:fixed;inset:0;z-index:200;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  background-size:256px;opacity:.45;mix-blend-mode:overlay;
+}
+#vignette{
+  position:fixed;inset:0;z-index:199;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%,transparent 25%,rgba(5,5,10,.75) 100%);
+}
+
+/* ══════════════════════════════════════
+   FULLSCREEN SCENES (Hook, Lesson, Handoff)
+══════════════════════════════════════ */
+.fs{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:90px 72px;overflow:hidden;
+}
+@media(max-width:600px){.fs{padding:80px 24px 80px 48px;}}
+
+.fs-bg{
+  position:absolute;inset:0;z-index:0;
+  background-size:cover;background-position:center;
+  transition:opacity 1s ease;
+}
+.fs-bg::after{
+  content:'';position:absolute;inset:0;
+  background:rgba(5,5,10,.72);
+}
+
+.fs-inner{position:relative;z-index:10;max-width:700px;width:100%;}
+
+/* ── text reveal: tied to scroll not auto ── */
+.sr{
+  opacity:0;transform:translateY(22px);
+  transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1);
+}
+.sr.in{opacity:1;transform:translateY(0);}
+.sr.out{opacity:0;transform:translateY(-14px);transition-duration:.3s;}
+.sr[data-d="1"]{transition-delay:.1s;}
+.sr[data-d="2"]{transition-delay:.22s;}
+.sr[data-d="3"]{transition-delay:.36s;}
+.sr[data-d="4"]{transition-delay:.52s;}
+.sr[data-d="5"]{transition-delay:.70s;}
+
+/* ── hook typography ── */
+.overline{
+  font-family:var(--fm);font-size:9px;letter-spacing:.35em;text-transform:uppercase;
+  color:rgba(200,184,154,.45);margin-bottom:2rem;display:block;
+}
+.h-giant{
+  font-family:var(--fd);font-size:clamp(2.2rem,5.5vw,4.4rem);
+  font-weight:300;font-style:italic;line-height:1.18;
+  color:var(--off-w);margin-bottom:.55em;
+}
+.h-giant em{font-style:normal;font-weight:700;color:var(--gold);}
+.h-sub{
+  font-family:var(--fd);font-size:clamp(1.05rem,2.4vw,1.4rem);
+  font-weight:300;font-style:italic;color:var(--dim);line-height:1.6;
+}
+
+/* scroll cue */
+.scroll-cue{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;z-index:20;
+}
+.scroll-cue span{font-family:var(--fm);font-size:8px;letter-spacing:.35em;text-transform:uppercase;color:var(--grey);}
+.sc-line{
+  width:1px;height:36px;
+  background:linear-gradient(to bottom,var(--grey),transparent);
+  animation:scAnim 2s ease-in-out infinite;
+}
+@keyframes scAnim{0%,100%{opacity:.5;transform:scaleY(1)}50%{opacity:.1;transform:scaleY(.3)}}
+
+/* ── lesson typography ── */
+.l-line{
+  font-family:var(--fd);font-size:clamp(1.3rem,3.2vw,2rem);
+  font-weight:300;font-style:italic;line-height:1.65;
+  color:var(--off-w);margin-bottom:.55em;
+}
+.l-line em{font-style:normal;font-weight:700;color:var(--dot-in);}
+.l-q{
+  font-family:var(--fd);font-size:clamp(1.2rem,2.8vw,1.75rem);
+  font-weight:400;font-style:italic;color:var(--gold);
+  border-top:1px solid rgba(200,184,154,.12);padding-top:1.4em;margin-top:.4em;
+  line-height:1.5;
+}
+
+/* ── handoff ── */
+.hf-t{
+  font-family:var(--fd);font-size:clamp(2rem,5.5vw,4rem);
+  font-weight:700;line-height:1.05;color:var(--off-w);margin-bottom:.8rem;
+}
+.hf-b{font-family:var(--fb);font-size:.9rem;color:var(--dim);line-height:1.75;margin-bottom:1.8rem;}
+.pips{display:flex;gap:6px;margin-bottom:1.4rem;}
+.pip{width:6px;height:6px;border-radius:50%;background:rgba(200,184,154,.18);}
+.pip.on{background:var(--gold);}
+.go-btn{
+  display:inline-flex;align-items:center;gap:10px;padding:14px 28px;
+  border:1.5px solid var(--gold);border-radius:3px;background:transparent;
+  color:var(--off-w);font-family:var(--fm);font-size:11px;
+  letter-spacing:.15em;text-transform:uppercase;cursor:pointer;
+  text-decoration:none;transition:all .25s;
+}
+.go-btn:hover{background:var(--gold);color:var(--black);}
+.go-arr{transition:transform .2s;}
+.go-btn:hover .go-arr{transform:translateX(5px);}
+
+/* ══════════════════════════════════════
+   EXHIBIT CHAPTERS
+   Sticky artifact + scrolling annotations
+══════════════════════════════════════ */
+.ch{position:relative;}/* height set by JS */
+
+.sticky-stage{
+  position:sticky;top:0;height:100vh;overflow:hidden;
+}
+
+/* full-bleed chapter background image */
+.ch-bg{
+  position:absolute;inset:0;z-index:0;
+  background-size:cover;background-position:center;
+}
+.ch-bg::after{
+  content:'';position:absolute;inset:0;
+  background:rgba(5,5,10,.65);
+}
+
+/* ── central artifact ── */
+.artifact-frame{
+  position:absolute;inset:0;z-index:10;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+/* All per-stop artifact images layered, crossfade between them */
+.artifact-img{
+  position:absolute;
+  max-height:78vh;max-width:48vw;
+  width:auto;height:auto;object-fit:contain;
+  filter:sepia(.3) contrast(.88) brightness(.8);
+  box-shadow:0 0 120px rgba(0,0,0,.9),0 0 40px rgba(0,0,0,.7);
+  border:1px solid rgba(200,184,154,.07);
+  opacity:0;
+  transition:opacity .7s cubic-bezier(.22,1,.36,1);
+  animation:artFloat 9s ease-in-out infinite;
+  transform-origin:center;
+}
+.artifact-img.show{opacity:1;}
+@keyframes artFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@media(max-width:768px){.artifact-img{max-width:82vw;max-height:42vh;}}
+
+/* side images */
+.side-img{
+  position:absolute;z-index:15;
+  width:clamp(110px,14vw,200px);height:auto;
+  object-fit:cover;
+  filter:sepia(.45) contrast(.82) brightness(.65);
+  border:1px solid rgba(200,184,154,.1);
+  box-shadow:0 8px 40px rgba(0,0,0,.75);
+  opacity:0;transform:scale(.94);
+  transition:opacity .5s ease,transform .5s ease;
+  aspect-ratio:4/3;
+}
+.side-img.show{opacity:1;transform:scale(1);}
+.side-left{left:5%;top:50%;transform:translateY(-50%) scale(.94);}
+.side-left.show{transform:translateY(-50%) scale(1);}
+.side-right{right:5%;top:50%;transform:translateY(-50%) scale(.94);}
+.side-right.show{transform:translateY(-50%) scale(1);}
+
+/* ── spotlight ── */
+.spotlight{
+  position:absolute;z-index:20;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(200,184,154,.16) 0%,transparent 68%);
+  pointer-events:none;opacity:0;
+  transition:opacity .5s ease,left .7s cubic-bezier(.22,1,.36,1),top .7s cubic-bezier(.22,1,.36,1),width .5s,height .5s;
+}
+.spotlight.on{opacity:1;}
+
+/* ── annotation card ── */
+.anno-layer{
+  position:absolute;inset:0;z-index:30;
+  display:flex;align-items:center;justify-content:flex-end;
+  padding:80px 5% 80px 52%;pointer-events:none;
+}
+@media(max-width:768px){
+  .anno-layer{padding:auto 5% 24px 5%;align-items:flex-end;}
+}
+.anno-card{
+  max-width:400px;width:100%;
+  opacity:0;transform:translateX(28px);
+  transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1);
+  pointer-events:all;
+}
+.anno-card.on{opacity:1;transform:translateX(0);}
+
+.anno-inner{
+  background:rgba(5,5,10,.78);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(200,184,154,.11);border-radius:6px;
+  padding:26px 26px 22px;position:relative;overflow:hidden;
+}
+.anno-inner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,184,154,.28),transparent);
+}
+
+.a-tag{
+  font-family:var(--fm);font-size:8px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:11px;display:flex;align-items:center;gap:8px;
+}
+.a-tag::after{content:'';flex:1;height:1px;background:rgba(200,184,154,.13);}
+
+.a-head{
+  font-family:var(--fd);font-size:clamp(1.4rem,2.8vw,2rem);
+  font-weight:600;line-height:1.12;color:var(--off-w);margin-bottom:11px;
+}
+.a-head em{font-style:italic;font-weight:300;color:var(--gold);}
+.a-head strong{color:var(--dot-in);}
+
+/* FIX 4: body text much more readable — brighter, larger */
+.a-body{font-family:var(--fb);font-size:.92rem;line-height:1.75;color:rgba(240,237,228,.82);margin-bottom:14px;}
+
+/* FIX 2: sentence-by-sentence reveal */
+.a-sent{
+  display:block;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .45s cubic-bezier(.22,1,.36,1), transform .45s cubic-bezier(.22,1,.36,1);
+  margin-bottom:.35em;
+}
+.a-sent.in{opacity:1;transform:translateY(0);}
+
+/* FIX 4: fact text brighter */
+.a-fact{
+  font-family:var(--fm);font-size:.72rem;
+  color:rgba(200,184,154,.68);border-top:1px solid rgba(200,184,154,.12);
+  padding-top:11px;line-height:1.65;
+}
+
+/* Score scale note — correct axis */
+.sc-scale-note{
+  font-family:var(--fm);font-size:.62rem;letter-spacing:.06em;
+  color:rgba(200,184,154,.5);margin-bottom:10px;line-height:1.5;
+  border-left:2px solid rgba(200,184,154,.2);padding-left:8px;
+}
+/* Score consequence sentence under each bar */
+.sc-sentence{
+  font-family:var(--fd);font-size:.85rem;font-style:italic;font-weight:300;
+  color:rgba(240,237,228,.72);line-height:1.5;
+  margin:-4px 0 12px 0;padding-left:8px;
+  border-left:2px solid rgba(200,184,154,.15);
+}
+/* Claimed vs Actual comparison header */
+.sc-compare-hdr{
+  display:flex;gap:8px;align-items:center;
+  font-family:var(--fm);font-size:7px;letter-spacing:.25em;text-transform:uppercase;
+  margin-bottom:6px;margin-top:14px;
+}
+.sc-compare-hdr span{ padding:2px 8px;border-radius:2px; }
+.sc-compare-hdr .claimed-lbl{ background:rgba(123,143,224,.15);color:var(--dot-cit); }
+.sc-compare-hdr .actual-lbl{  background:rgba(232,114,74,.15); color:var(--dot-in);  }
+.sc-compare-hdr .arrow-lbl{   color:var(--grey); font-size:10px; }
+
+/* ══════════════════════════════════════
+   CINEMATIC MAP — Tactical War Table 1792
+══════════════════════════════════════ */
+.map-scene{
+  position:absolute;inset:0;z-index:10;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.map-stack{
+  position:relative;
+  width:min(56vw,540px);
+  animation:artFloat 12s ease-in-out infinite;
+  transform-origin:center;
+  transition:transform 1.8s cubic-bezier(.22,1,.36,1);
+}
+/* Layer 1: real map photo — darkened, high contrast */
+.map-photo{
+  width:100%;height:auto;display:block;
+  filter:sepia(.5) contrast(1.2) brightness(.5);
+  border:1px solid rgba(200,184,154,.12);
+  box-shadow:0 0 80px rgba(0,0,0,.9),0 0 200px rgba(0,0,0,.7);
+}
+/* Layer 2: SVG arrows — mix-blend-mode:multiply paints into the paper */
+.map-svg-overlay{
+  position:absolute;inset:0;width:100%;height:100%;
+  overflow:visible;
+}
+/* Layer 3: tactical vignette */
+.map-vignette{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 48% 52%, transparent 28%, rgba(5,5,10,.72) 78%);
+}
+/* Floating labels — positioned by JS, parallax shift applied */
+.map-label-float{
+  position:absolute;
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  pointer-events:none;white-space:nowrap;
+  font-size:clamp(.6rem,1.1vw,.9rem);
+  text-shadow:0 1px 4px rgba(0,0,0,.8);
+  transition:color .5s ease, text-shadow .5s ease, opacity .5s ease;
+}
+.map-label-float.lbl-paris{color:rgba(200,184,154,.9);}
+.map-label-float.lbl-paris.danger{
+  color:rgba(230,60,60,.95);
+  animation:parisPulse 1.2s ease-in-out infinite;
+  text-shadow:0 0 18px rgba(230,60,60,.7),0 0 40px rgba(230,60,60,.3);
+}
+@keyframes parisPulse{0%,100%{text-shadow:0 0 12px rgba(230,60,60,.6)}50%{text-shadow:0 0 28px rgba(230,60,60,1),0 0 55px rgba(230,60,60,.4)}}
+.map-label-float.lbl-enemy{color:rgba(160,40,40,0);font-size:clamp(.55rem,1vw,.8rem);}
+.map-label-float.lbl-enemy.show{color:rgba(190,55,55,.95);}
+
+/* Paris dot */
+.paris-dot{fill:rgba(200,184,154,.85);animation:pdotPulse 2.5s ease-in-out infinite;}
+@keyframes pdotPulse{0%,100%{r:4;opacity:.85}50%{r:6;opacity:.4}}
+.paris-dot.danger{fill:rgba(220,60,60,.9);}
+
+/* Ink-bleed invasion arrows */
+.map-inv-arrow{
+  stroke:#9b1515;stroke-width:4.5;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:320;stroke-dashoffset:320;
+  mix-blend-mode:multiply;
+  filter:url(#ink-bleed);
+  transition:stroke-dashoffset 2.4s cubic-bezier(.22,1,.36,1), opacity .6s ease;
+  opacity:0;
+}
+.map-inv-arrow.draw{stroke-dashoffset:0;opacity:1;}
+.map-inv-arrow.hide{opacity:0 !important;transition:opacity .4s ease;}
+.map-inv-head{
+  fill:#9b1515;opacity:0;mix-blend-mode:multiply;filter:url(#ink-bleed);
+  transition:opacity .5s ease 2.2s;
+}
+.map-inv-head.draw{opacity:.9;}
+.map-inv-head.hide{opacity:0 !important;transition:opacity .3s ease;}
+
+/* Victory arrows */
+.map-vic-arrow{
+  stroke:#1a5c35;stroke-width:3.5;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:240;stroke-dashoffset:240;
+  mix-blend-mode:multiply;
+  filter:url(#ink-bleed);
+  transition:stroke-dashoffset 1.8s cubic-bezier(.22,1,.36,1), opacity .5s ease;
+  opacity:0;
+}
+.map-vic-arrow.draw{stroke-dashoffset:0;opacity:1;}
+.map-vic-head{fill:#1a5c35;opacity:0;mix-blend-mode:multiply;transition:opacity .5s ease 1.5s;}
+.map-vic-head.draw{opacity:.9;}
+.sc-block{margin-top:6px;}
+.sc-row{display:flex;align-items:center;gap:7px;margin-bottom:9px;}
+.sc-lbl{font-family:var(--fm);font-size:8px;letter-spacing:.13em;text-transform:uppercase;min-width:76px;}
+.sc-lbl.in{color:var(--dot-in);}
+.sc-lbl.cit{color:var(--dot-cit);}
+.sc-lbl.hum{color:var(--dot-hum);}
+.sc-num{font-family:var(--fm);font-size:1.15rem;font-weight:500;min-width:28px;text-align:right;}
+.sc-num.in{color:var(--dot-in);}
+.sc-num.cit{color:var(--dot-cit);}
+.sc-num.hum{color:var(--dot-hum);}
+.sc-trk{flex:1;height:2px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;}
+.sc-fill{height:100%;width:0%;border-radius:2px;transition:width 1.4s cubic-bezier(.22,1,.36,1);}
+.sc-fill.in{background:linear-gradient(90deg,rgba(232,114,74,.3),var(--dot-in));}
+.sc-fill.cit{background:linear-gradient(90deg,rgba(123,143,224,.3),var(--dot-cit));}
+.sc-fill.hum{background:linear-gradient(90deg,rgba(77,184,144,.3),var(--dot-hum));}
+.sc-delta{
+  font-family:var(--fm);font-size:.62rem;padding:1px 6px;border-radius:2px;
+}
+.sc-delta.neg{background:rgba(200,50,50,.12);color:#e05555;border:1px solid rgba(200,50,50,.2);}
+.sc-delta.pos{background:rgba(77,184,144,.12);color:var(--dot-hum);border:1px solid rgba(77,184,144,.2);}
+
+/* dot defs */
+.dot-defs{display:flex;flex-direction:column;gap:1.1rem;margin-top:6px;}
+.dd-item{display:flex;gap:.9rem;align-items:flex-start;}
+.dd-circ{width:11px;height:11px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.dd-circ.in{background:var(--dot-in);box-shadow:0 0 8px rgba(232,114,74,.4);}
+.dd-circ.cit{background:var(--dot-cit);box-shadow:0 0 8px rgba(123,143,224,.4);}
+.dd-circ.hum{background:var(--dot-hum);box-shadow:0 0 8px rgba(77,184,144,.4);}
+.dd-name{font-family:var(--fm);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:2px;}
+.dd-def{font-family:var(--fd);font-size:1.05rem;font-style:italic;font-weight:300;line-height:1.35;}
+
+/* names list */
+.names{display:flex;flex-direction:column;gap:5px;margin-top:8px;}
+.name-row{
+  display:flex;align-items:baseline;gap:8px;font-family:var(--fm);font-size:.72rem;color:var(--dim);
+  opacity:0;transform:translateX(-8px);
+  transition:opacity .35s ease, transform .35s ease;
+}
+.name-row.nm-in{opacity:1;transform:translateX(0);}
+.name-dt{color:var(--grey);min-width:64px;font-size:.65rem;}
+.name-nm{position:relative;}
+/* Strikethrough animates as a line drawing across */
+.name-row.x .name-nm::after{
+  content:'';position:absolute;left:0;top:50%;height:1.5px;
+  background:rgba(200,50,50,.55);
+  width:0%;transition:width .5s ease .1s;
+}
+.name-row.x.nm-in .name-nm::after{width:100%;}
+.name-row.hi{color:var(--dot-in);font-weight:500;}
+.name-note{font-size:.6rem;color:var(--grey);margin-left:4px;}
+
+/* ══════════════════════════════════════
+   CHOICE INTERACTION
+══════════════════════════════════════ */
+.choice-wrap{margin-top:1.4rem;display:flex;flex-direction:column;gap:9px;}
+.ch-opt{
+  display:flex;align-items:center;gap:11px;padding:11px 15px;
+  background:rgba(255,255,255,.025);border:1px solid rgba(200,184,154,.1);
+  border-radius:4px;cursor:pointer;transition:all .22s;
+  font-family:var(--fb);font-size:.82rem;color:var(--off-w);text-align:left;width:100%;
+}
+.ch-opt:hover{background:rgba(200,184,154,.05);border-color:rgba(200,184,154,.25);}
+.ch-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.ch-ans{
+  margin-top:11px;padding:13px 15px;
+  border-left:3px solid var(--gold);background:rgba(200,184,154,.03);
+  font-family:var(--fb);font-size:.8rem;line-height:1.65;color:var(--dim);
+  opacity:0;transition:opacity .5s ease;border-radius:0 4px 4px 0;
+}
+.ch-ans.show{opacity:1;}
+.ch-opt.correct{border-color:var(--dot-cit);background:rgba(123,143,224,.07);}
+.ch-opt.dimmed{opacity:.28;pointer-events:none;}
+
+</style>
+</head>
+<body>
+
+<div id="pb"></div>
+<div id="grain"></div>
+<div id="vignette"></div>
+
+<div id="lang-bar">
+  <div id="lang-toggle">
+    <button class="lb on" onclick="setLang('en')">EN</button>
+    <button class="lb" onclick="setLang('jp')">日本語</button>
+  </div>
+</div>
+
+<nav id="tl"></nav>
+<main id="main"></main>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   ████████╗██████╗ ██╗   ██╗███████╗████████╗    ███████╗██████╗ ██╗████████╗
+      ██╔══╝██╔══██╗██║   ██║██╔════╝╚══██╔══╝    ██╔════╝██╔══██╗██║╚══██╔══╝
+      ██║   ██████╔╝██║   ██║███████╗   ██║       █████╗  ██║  ██║██║   ██║
+      ██║   ██╔══██╗██║   ██║╚════██║   ██║       ██╔══╝  ██║  ██║██║   ██║
+      ██║   ██║  ██║╚██████╔╝███████║   ██║       ███████╗██████╔╝██║   ██║
+      ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝       ╚══════╝╚═════╝ ╚═╝   ╚═╝
+
+   ALL STORY CONTENT LIVES HERE. Edit anything in this block.
+   Code below "BUILD ENGINE" is not for editing.
+══════════════════════════════════════════════════════════ */
+
+/* ── BACKGROUND IMAGES ──
+   Local files in ./assets/ folder.
+   To change a background: drop a new file in assets/, update the path here.
+   ─────────────────────────────────────────────────────── */
+const BG = {
+  hook:    './assets/execution.jpg',    // Execution scene — full bleed hook background
+  before:  './assets/louis.jpg',        // Louis XVI portrait — Before chapter background
+  dream:   './assets/declaration.jpg',  // Declaration document — Dream chapter background
+  war:     './assets/valmy.jpg',        // Battle of Valmy — War/map chapter background
+  terror:  './assets/robespierre.jpg',  // Robespierre portrait — Terror chapter background
+  lesson:  './assets/execution.jpg',    // Reuse execution for the dark lesson ending
+};
+
+/* ── ARTIFACT IMAGES ──
+   Central exhibit objects — one per chapter, stays sticky while you scroll.
+   ─────────────────────────────────────────────────────── */
+const ART = {
+  hook:              './assets/execution.jpg',
+  before:            './assets/louis.jpg',
+  beforeSide:        './assets/versailles.jpg',
+  dream:             './assets/declaration.jpg',
+  dreamSide:         './assets/bastille.jpg',
+  terror:            './assets/robespierre.jpg',
+  valmy:             './assets/valmy.jpg',
+  massacres:         './assets/massacres.jpg',
+  committee:         './assets/committee.jpg',
+  vendee:            './assets/vendee.jpg',
+  vendeeColumns:     './assets/vendee-columns.jpg',
+  vendeeBattle:      './assets/vendee-battle.jpg',
+  dechristianization:'./assets/dechristianization.jpg',
+  noyades:           './assets/noyades.jpg',
+  noyadesSide:       './assets/noyades-side.jpg',
+};
+
+/* ── CHAPTERS (timeline) ── */
+const CHS = [
+  {id:'hook',    en:'The Hook',    jp:'フック'},
+  {id:'before',  en:'Before',      jp:'革命前'},
+  {id:'dream',   en:'The Dream',   jp:'夢'},
+  {id:'war',     en:'The War',     jp:'戦争'},
+  {id:'vendee',  en:'The Vendée',  jp:'ヴァンデー'},
+  {id:'terror',  en:'The Terror',  jp:'恐怖'},
+  {id:'lesson',  en:'The Lesson',  jp:'教訓'},
+];
+
+/* ── SCORE DATA ── */
+const SCORES = {
+  before:{
+    lbl:{en:'BEFORE · ANCIEN RÉGIME · 1788',jp:'革命前 · 1788年'},
+    rows:[
+      {k:'in', v:92, en:'The king speaks. Courts obey. No institution can say no.', jp:'王が語る。裁判所は服従する。「ノー」と言える機関は存在しない。'},
+      {k:'cit',v:18, en:'You are born into your class. You pay. You do not vote.', jp:'あなたは階級に生まれる。税を払う。選挙権はない。'},
+      {k:'hum',v:8,  en:'People outside France are labor, land, or enemies. Not people.', jp:'フランス以外の人間は労働力か土地か敵だ。人間ではない。'},
+    ]
+  },
+  claimed:{
+    lbl:{en:'CLAIMED · THE ASSEMBLY · 1789',jp:'主張 · 1789年'},
+    rows:[
+      {k:'in', v:78, en:'Leaders can be voted out. The people, not God, grant power.', jp:'指導者は選挙で追い出せる。権力は神ではなく民から生まれる。'},
+      {k:'cit',v:82, en:'Any man can vote, speak, own property, demand justice.', jp:'誰もが投票し、発言し、財産を持ち、正義を要求できる。'},
+      {k:'hum',v:82, en:'These rights belong to every human being on earth.', jp:'これらの権利は地球上のすべての人間に属する。'},
+    ]
+  },
+  actual:{
+    lbl:{en:'ACTUAL · THE TERROR · 1793–94',jp:'現実 · 恐怖政治'},
+    rows:[
+      {k:'in', v:92, delta:+14, en:'Robespierre cannot be questioned. Disagreement is treason.', jp:'ロベスピエールは問われない。異議は反逆罪だ。'},
+      {k:'cit',v:10, delta:-72, en:'You can be guillotined on suspicion. No trial. No evidence.', jp:'疑いだけでギロチンにかけられる。裁判なし。証拠なし。'},
+      {k:'hum',v:10, delta:-72, en:'The men who wrote "all humanity" now decide who deserves to live.', jp:'「全人類」と書いた男たちが、誰が生きるに値するかを決める。'},
+    ]
+  },
+  // Robespierre's CLAIMED scores — what he said he believed
+  // These match the French Revolution Claimed scores because he claimed to BE the revolution
+  robespierre_claimed:{
+    lbl:{en:'WHAT ROBESPIERRE CLAIMED · 1789–92',jp:'ロベスピエールが主張したこと · 1789–92年'},
+    rows:[
+      {k:'in', v:78, en:'He said: "I am the servant of the people. The people can remove me."', jp:'彼は言った：「私は民の僕だ。民は私を解任できる。」'},
+      {k:'cit',v:82, en:'He wrote the Declaration. All men born free. Any man can speak.', jp:'彼は宣言を書いた。すべての人間は自由に生まれる。誰もが発言できる。'},
+      {k:'hum',v:82, en:'Universal rights. Not just for France — for all of humanity.', jp:'普遍的権利。フランスだけでなく、全人類のために。'},
+    ]
+  }
+};
+
+const DOT_DEFS = [
+  {k:'in',  en:{nm:'Themselves', df:'How certain is the leader they cannot be wrong?'},    jp:{nm:'権力者自身', df:'指導者は自分が間違えないと確信しているか？'}},
+  {k:'cit', en:{nm:'Citizens',   df:'How much does the system trust its own people?'},     jp:{nm:'市民',       df:'システムは自国民をどれだけ信頼しているか？'}},
+  {k:'hum', en:{nm:'All Humans', df:'How far does trust extend beyond the border?'},       jp:{nm:'全人類',     df:'信頼は国境を越えてどこまで広がるか？'}},
+];
+
+const NAMES = [
+  {nm:'Louis XVI',         dt:'Jan 1793', x:true},
+  {nm:'Marie Antoinette',  dt:'Oct 1793', x:true},
+  {nm:'Georges Danton',    dt:'Apr 1794', x:true, note:'Co-founder of the Revolution'},
+  {nm:'Camille Desmoulins',dt:'Apr 1794', x:true},
+  {nm:'Jacques Hébert',    dt:'Mar 1794', x:true},
+  {nm:'Maximilien Robespierre', dt:'Jul 1794', hi:true, note:'The revolution ate itself'},
+];
+
+const CHOICE = {
+  q:  {en:'Which number changed most?', jp:'どの数字が最も変わったか？'},
+  opts:[
+    {k:'in',  en:'Themselves — leader\'s self-certainty',jp:'権力者自身 — 指導者の確信度',
+     ans:{en:'Changed, but least (+14). The real collapse is elsewhere.',jp:'変化したが最小（+14）。本当の崩壊は別にある。'}},
+    {k:'cit', correct:true, en:'Citizens — system\'s trust in its people',jp:'市民 — 市民への信頼',
+     ans:{en:'82 → 10. Δ −72. Same leaders. Same city. Four years.',jp:'82→10。Δ−72。同じ指導者。四年間。'}},
+    {k:'hum', en:'All Humans — how far trust extended',jp:'全人類 — 信頼の広がり',
+     ans:{en:'Also −72. But Citizens collapses furthest: highest in history to near-zero.',jp:'こちらも−72。しかし市民スコアが最も劇的に崩壊した。'}},
+  ]
+};
+
+/* ── SCENES ── */
+/*
+  type: 'fullscreen' | 'exhibit' | 'map' | 'handoff'
+  exhibit.stops[i].sp = spotlight {x%, y%, w, h}
+  exhibit.stops[i].side = {src, pos:'left'|'right'}
+  exhibit.stops[i].scores = scoreKey (triggers score reveal)
+  exhibit.stops[i].names = true (renders names list)
+  exhibit.stops[i].dotDefs = true (renders dot explainer)
+  map.stops[i].mapState = 'clean'|'invasion'|'committee'|'victory'|'creep'
+*/
+const STORY = [
+
+  /* ════ HOOK ════ */
+  {ch:'hook', type:'fullscreen', bg:BG.hook, art:ART.hook,
+   en:{ol:'The Trust Spectrum — The French Revolution',
+       h:'The French Revolution wrote the most universal declaration of human rights in history.',
+       sub:'Four years later, the same people were executing their own heroes.\nThis is not a story about villains.\nIt is a story about one number.'},
+   jp:{ol:'トラスト・スペクトラム — フランス革命',
+       h:'フランス革命は、歴史上最も普遍的な人権宣言を書いた。',
+       sub:'四年後、同じ人々が自分たちの英雄を処刑していた。\nこれは悪人の物語ではない。\nたった一つの数字の物語だ。'},
+   scrollHint:true},
+
+  /* ════ BEFORE ════ */
+  {ch:'before', type:'exhibit', bg:BG.before,
+   stops:[
+     {art:ART.before, sp:{x:'52%',y:'35%',w:210,h:210}, side:null,
+      en:{tag:'Before · France 1788', h:'175 years of silence.',
+          body:'The king hadn\'t asked his people for their opinion since 1614. Not from cruelty — from indifference. The peasants of France were as distant as the stars.',
+          fact:'97% of France had no political rights whatsoever.'},
+      jp:{tag:'革命前 · フランス 1788年', h:'175年間の沈黙。',
+          body:'国王は1614年以来、国民の意見を聞いていなかった。残酷さからではなく、無関心から。農民たちは星と同じくらい遠い存在だった。',
+          fact:'フランスの97%が政治的権利を一切持たなかった。'}},
+     {art:ART.beforeSide, sp:{x:'44%',y:'62%',w:190,h:160}, side:{src:ART.beforeSide, pos:'right'},
+      en:{tag:'Versailles · The Palace', h:'700 rooms.\nAnd no toilets.',
+          body:'The palace of absolute power smelled like a sewer. A peasant worked 280 days a year and kept barely enough to eat twice a day. Versailles\' weekly food waste exceeded his annual income.',
+          fact:'The court spent 25% of royal revenue on itself.'},
+      jp:{tag:'ヴェルサイユ · 宮殿', h:'700の部屋。\nそしてトイレはなかった。',
+          body:'絶対権力の宮殿は下水道のような臭いがした。農民は年間280日働き、一日二回食べるのがやっとだった。ヴェルサイユの一週間の廃棄食料が彼の年収を上回った。',
+          fact:'宮廷は王室収入の25%を自分たちのために使った。'}},
+     {art:ART.before, sp:{x:'50%',y:'50%',w:260,h:310}, side:null, dotDefs:true,
+      en:{tag:'Before · Score Reveal', h:'The numbers.',
+          body:'Three dots. Three questions. One framework across 25 political systems.'},
+      jp:{tag:'革命前 · スコア', h:'数字。',
+          body:'3つのドット。3つの質問。25の政治システムに共通するフレームワーク。'},
+      scores:'before'},
+  ]},
+
+  /* ════ DREAM ════ */
+  {ch:'dream', type:'exhibit', bg:BG.dream,
+   stops:[
+     {art:ART.dreamSide, sp:{x:'50%',y:'28%',w:250,h:130}, side:{src:ART.dreamSide, pos:'left'},
+      en:{tag:'Claimed · 1789', h:'<em>Liberté.\nÉgalité.\nFraternité.</em>',
+          body:'The Assembly voted. The king lost. For the first time in French history — the people spoke, and power listened.',
+          fact:'The Declaration was adopted 26 August 1789.'},
+      jp:{tag:'主張 · 1789年', h:'<em>自由。\n平等。\n博愛。</em>',
+          body:'議会は票を投じた。国王は敗れた。フランスの歴史上初めて — 民が語り、権力が聞いた。',
+          fact:'宣言は1789年8月26日に採択された。'}},
+     {art:ART.dream, sp:{x:'42%',y:'54%',w:300,h:180}, side:null,
+      en:{tag:'Claimed · The Sentence', h:'"All men are born\nfree and equal."',
+          body:'Not just Frenchmen. All men. It was the most ambitious sentence any government had ever written.',
+          fact:'Article 1. It influenced every democratic constitution written in the next 200 years.'},
+      jp:{tag:'主張 · その文', h:'「すべての人間は\n自由に生まれ、平等だ。」',
+          body:'フランス人だけではない。すべての人間。いかなる政府も書いたことのない、最も野心的な一文だった。',
+          fact:'第1条。その後200年間に書かれたすべての民主主義憲法に影響を与えた。'}},
+     {art:ART.dream, sp:{x:'50%',y:'50%',w:270,h:310}, side:null,
+      en:{tag:'Claimed · Score Reveal', h:'What they promised.',
+          body:'The highest trust claim any government had ever made. Watch what happens.'},
+      jp:{tag:'主張 · スコア', h:'彼らが約束したこと。',
+          body:'いかなる政府もしたことのない最高の信頼の主張。何が起きるかを見よ。'},
+      scores:'claimed'},
+  ]},
+
+  /* ════ WAR ════
+     Stop 1: MAP invasion (red northeast + Vendée orange appears)
+     Stop 2: PAINTING massacres — September panic
+     Stop 3: PAINTING committee — Robespierre + his claimed scores
+     Stop 4: MAP victory + expansion (blue pushes out past borders)
+     Stop 5: PAINTING vendee — bridge to next chapter
+  ════ */
+  {ch:'war', type:'war-mixed', bg:BG.war,
+   stops:[
+     /* Stop 0 — MAP: invasion from northeast */
+     {kind:'map', mapState:'invasion',
+      en:{tag:'The Invasion · 1792', h:'Prussia, Austria, Britain.\nAll moving toward Paris.',
+          body:'Five empires attacked at once from the north and east. Paris was in panic. The revolution was two years old and about to be destroyed.',
+          fact:'The Duke of Brunswick threatened to burn Paris to the ground if the royal family was harmed.'},
+      jp:{tag:'侵略 · 1792年', h:'プロイセン、オーストリア、イギリス。\nすべてパリへ向かって。',
+          body:'五つの帝国が北と東から同時に攻撃した。パリはパニックに陥った。革命はまだ二年しか経たず、破壊されようとしていた。',
+          fact:'ブランシュヴァイク公は王室家族が害を受ければパリを焼き払うと脅した。'}},
+     /* Stop 1 — PAINTING: September Massacres */
+     {kind:'exhibit', art:ART.massacres, sp:{x:'50%',y:'50%',w:280,h:260},
+      en:{tag:'September 1792 · Paris', h:'1,400 people killed.\nNo trial.\nNo evidence.',
+          body:'As Prussian forces closed in, Paris mobs broke into prisons and massacred the inmates. The revolutionary government watched. Some encouraged it. The same men who wrote "all men are born free" let it happen.',
+          fact:'The killings lasted five days. Revolutionary leaders called it "popular justice."'},
+      jp:{tag:'1792年9月 · パリ', h:'1,400人が殺された。\n裁判なし。\n証拠なし。',
+          body:'プロイセン軍が迫る中、パリの群衆が刑務所に押し入り収監者を虐殺した。革命政府は見ていた。一部は煽った。「すべての人間は自由に生まれる」と書いた同じ男たちがそれを許した。',
+          fact:'殺戮は五日間続いた。革命指導者たちはそれを「民衆の正義」と呼んだ。'}},
+     /* Stop 2 — PAINTING: Committee forms + Robespierre Claimed scores */
+     {kind:'exhibit', art:ART.committee, sp:{x:'50%',y:'45%',w:250,h:210},
+      en:{tag:'The Committee · April 1793', h:'"Temporary.\nUntil the danger passes."',
+          body:'Twelve men. Absolute power. Robespierre\'s answer to crisis. Before the Committee, here is what he said he believed:'},
+      jp:{tag:'委員会 · 1793年4月', h:'「危険が去るまで\n一時的なものだ。」',
+          body:'12人の男。絶対権力。ロベスピエールの危機への答え。委員会の前、彼はこう信じていると言った：'},
+      scores:'robespierre_claimed'},
+     /* Stop 3 — MAP: victory + France expands */
+     {kind:'map', mapState:'victory',
+      en:{tag:'The Victory · 1792–95', h:'They won.\nAnd then kept going.',
+          body:'France didn\'t just repel the invasion — it pushed back past its own borders. Belgium, the Rhine, Savoy, Nice. The revolution that started to defend itself became a conquering force.',
+          fact:'By 1795 France had annexed Belgium and the left bank of the Rhine. By 1799 it controlled most of western Europe.'},
+      jp:{tag:'勝利 · 1792–95年', h:'彼らは勝った。\nそして進み続けた。',
+          body:'フランスは侵略を撃退するだけでなく、自国の国境を越えて押し返した。ベルギー、ライン、サヴォワ、ニース。自衛のために始まった革命は征服する力になった。',
+          fact:'1795年までにフランスはベルギーとライン左岸を併合。1799年までに西ヨーロッパの大半を支配した。'}},
+     /* Stop 4 — PAINTING: bridge to Vendée */
+     {kind:'exhibit', art:ART.vendee, sp:{x:'50%',y:'48%',w:280,h:240},
+      en:{tag:'Meanwhile · Inside France', h:'While the armies\nfought east —\nthe revolution turned west.',
+          body:'The same year France defeated the empires, it sent its own army against its own farmers. The Vendée region refused conscription. The response was not negotiation.',
+          fact:'The Committee of Public Safety ordered the Vendée to be turned into "an uninhabitable desert."'},
+      jp:{tag:'その間 · フランス国内', h:'軍が東で戦う間、\n革命は西へ向かった。',
+          body:'フランスが帝国を打ち破った同じ年、自国の農民に自国の軍隊を送った。ヴァンデー地域は徴兵を拒否した。対応は交渉ではなかった。',
+          fact:'公安委員会はヴァンデーを「人の住めない砂漠」にするよう命じた。'}},
+  ]},
+
+  /* ════ VENDÉE ════ */
+  {ch:'vendee', type:'exhibit', bg:'./assets/vendee.jpg',
+   stops:[
+     /* Stop 0: Who were the Vendeans? */
+     {art:ART.vendeeColumns, sp:{x:'50%',y:'45%',w:280,h:250}, side:null,
+      en:{tag:'The Vendée · 1793', h:'They were not royalists.\nThey were farmers.',
+          body:'The Vendée was a poor farming region on France\'s western coast. Religious. Rural. Bypassed by the revolution\'s ideas. When Paris ordered conscription, they said no — not for the king, but because they didn\'t want to leave their farms to fight someone else\'s war.',
+          fact:'It was only after the revolution attacked them that the Vendeans took up the royalist cause. Historian François Furet: they rose against "a new regime they believed to be more oppressive."'},
+      jp:{tag:'ヴァンデー · 1793年', h:'彼らは王党派ではなかった。\n農民だった。',
+          body:'ヴァンデーはフランス西海岸の貧しい農業地域だった。信仰深く、田舎で、革命の思想に縁遠かった。パリが徴兵を命じると、彼らは拒否した — 王のためではなく、他人の戦争のために農場を離れたくなかったから。',
+          fact:'革命に攻撃されて初めて、ヴァンデー人は王党の旗を掲げた。歴史家フランソワ・フュレ：「彼らはより抑圧的だと信じた新体制に対して立ち上がった。」'}},
+     /* Stop 1: The infernal columns */
+     {art:ART.vendeeBattle, sp:{x:'50%',y:'48%',w:300,h:260}, side:null,
+      en:{tag:'The Infernal Columns · January 1794', h:'Burn everything.\nKill everyone.',
+          body:'General Turreau\'s "infernal columns" — twelve brigades — were ordered to make the Vendée uninhabitable. They burned farms, crops, villages. They killed without asking who was a rebel and who was a farmer. Women, children, the sick.',
+          fact:'Turreau wrote to the Committee: "I have crushed children under the hooves of my horses, massacred women who will bear no more brigands." Estimated dead: 170,000 — 20% of the entire regional population.'},
+      jp:{tag:'地獄の縦隊 · 1794年1月', h:'すべてを焼け。\n全員を殺せ。',
+          body:'テュロー将軍の「地獄の縦隊」— 12個旅団 — はヴァンデーを人の住めない土地にするよう命じられた。農場、作物、村を焼いた。誰が反乱軍で誰が農民かを聞かずに殺した。女性、子供、病人も。',
+          fact:'テュロー委員会への報告：「馬の蹄で子供を踏み潰し、反乱軍の母となるべき女性を虐殺した。」推定死者数：170,000人 — 地域人口の20%。'}},
+     /* Stop 2: Dechristianization */
+     {art:ART.dechristianization, sp:{x:'50%',y:'42%',w:270,h:240}, side:null,
+      en:{tag:'Dechristianization · 1793', h:'They seized Notre Dame.\nAnd installed a new goddess.',
+          body:'The revolution declared war on religion. Churches were closed. Priests were forced to marry or flee. The statue of the Virgin Mary was removed from Notre Dame\'s altar and replaced with a woman playing the "Goddess of Reason." All clergy who refused to swear loyalty to the state faced execution.',
+          fact:'They renamed the calendar. Renamed the months. Made the week ten days instead of seven. Even time itself had to be revolutionary.'},
+      jp:{tag:'脱キリスト教化 · 1793年', h:'彼らはノートルダムを占拠し、\n新しい女神を設置した。',
+          body:'革命は宗教に戦争を宣言した。教会は閉鎖された。聖職者は結婚するか逃げるかを迫られた。ノートルダムの祭壇から聖母マリアの像が撤去され、「理性の女神」を演じる女性に置き換えられた。国家への忠誠を誓わない聖職者は処刑に直面した。',
+          fact:'暦を改名した。月の名前を変えた。一週間を七日から十日にした。時間さえも革命的でなければならなかった。'}},
+     /* Stop 3: The Drownings at Nantes */
+     {art:ART.noyades, sp:{x:'50%',y:'46%',w:280,h:270}, side:{src:ART.noyadesSide, pos:'right'},
+      en:{tag:'Noyades de Nantes · November 1793', h:'Carrier called it\n"the national bathtub."',
+          body:'Revolutionary commander Jean-Baptiste Carrier loaded prisoners onto barges with trapdoor bottoms and sank them in the Loire river. Priests. Nuns. Farmers. Women. Children. The youngest victim on record was five years old. Between 1,800 and 4,800 people drowned. The men who wrote "all men are born free" were drowning children in a river.',
+          fact:'On 16 November 1793, the first 160 victims — Catholic priests — were loaded onto a barge called La Gloire. The hatches were opened. None survived. This is what a Citizens score of 10 looks like.'},
+      jp:{tag:'ナントの溺殺 · 1793年11月', h:'カリエはそれを\n「国家の浴槽」と呼んだ。',
+          body:'革命派司令官ジャン＝バティスト・カリエは囚人たちを底に開口部のある船に乗せ、ロワール川に沈めた。聖職者。修道女。農民。女性。子供。記録上最年少の犠牲者は五歳だった。1,800人から4,800人が溺死した。「すべての人間は自由に生まれる」と書いた男たちが川で子供を溺死させていた。',
+          fact:'1793年11月16日、最初の160人の犠牲者 — カトリック司職者 — がラ・グロワールと呼ばれる船に乗せられた。開口部が開かれた。誰も生き残らなかった。これが市民スコア10の姿だ。'}},
+  ]},
+
+  /* ════ TERROR ════ */
+  {ch:'terror', type:'exhibit', bg:BG.terror,
+   stops:[
+     {art:ART.terror, sp:{x:'48%',y:'38%',w:210,h:230}, side:null,
+      en:{tag:'Actual · 1793–94', h:'The same leaders.\nThe same ideology.\nThe same city.',
+          body:'16,000 people guillotined in twelve months. Robespierre — the man who wrote "all men are born free" — ran the machine. He called it "virtue and terror."',
+          fact:'"Without virtue, terror is destructive. Without terror, virtue is impotent." — Robespierre.'},
+      jp:{tag:'現実 · 1793–94年', h:'同じ指導者たち。\n同じイデオロギー。\n同じ街。',
+          body:'12ヶ月で16,000人がギロチンに。「すべての人間は自由に生まれる」と書いたロベスピエールがその機械を動かした。彼はそれを「美徳と恐怖」と呼んだ。',
+          fact:'「美徳なき恐怖は破壊的だ。恐怖なき美徳は無力だ。」— ロベスピエール。'}},
+     {art:ART.hook, sp:{x:'52%',y:'58%',w:220,h:185}, side:null, names:true,
+      en:{tag:'The Names', h:'The list kept shrinking.'},
+      jp:{tag:'名前たち', h:'リストは縮み続けた。'}},
+     {art:ART.terror, sp:{x:'50%',y:'50%',w:275,h:310}, side:null,
+      en:{tag:'Actual · Score Collapse', h:'From 82 to 10.\nFour years. Same leaders.',
+          body:'The biggest Citizens collapse in the dataset. One variable changed. Everything else stayed the same.'},
+      jp:{tag:'現実 · スコア崩壊', h:'82から10へ。\n四年間。同じ指導者。',
+          body:'データセット中最大の市民スコア崩壊。一つの変数が変わった。他はすべて同じだった。'},
+      scores:'actual'},
+  ]},
+
+  /* ════ LESSON ════ */
+  {ch:'lesson', type:'fullscreen', bg:BG.lesson,
+   en:{lines:[
+     'The ideology never changed.',
+     'Only <em>one number</em> did.',
+     'The French Revolution didn\'t fail because the leaders were evil.',
+     'It failed because they stopped believing they could be wrong.',
+     'That one belief — <em>"I am the revolution, to question me is to betray it"</em> — is the most dangerous sentence in politics.',
+     'It has appeared in every dictatorship in history.',
+   ], q:'Where do you see this sentence today?'},
+   jp:{lines:[
+     'イデオロギーは変わらなかった。',
+     '変わったのは<em>一つの数字</em>だけだった。',
+     'フランス革命が失敗したのは、指導者が悪だったからではない。',
+     '失敗したのは、彼らが自分の誤りを信じることをやめたからだ。',
+     'その一つの信念 — <em>「私が革命だ。私を疑うことは裏切りだ」</em> — は、政治において最も危険な言葉だ。',
+     'それは歴史上のすべての独裁政治に現れてきた。',
+   ], q:'今日、この言葉をどこで見ているか？'}},
+
+  /* ════ HANDOFF ════ */
+  {ch:'lesson', type:'handoff', bg:BG.lesson,
+   en:{intro:'One last thing they never taught you.',
+       title:'Haiti read\nthe Declaration.\nFrance sent\n40,000 troops.',
+       body:'In 1791, enslaved Haitians quoted the Declaration back at France: "All men are born free." France\'s response: the largest military expedition in its history to re-enslave them.\n\nAll Humans score: claimed 82. Actual: near zero, when it cost them money.\n\nThis is one story of seven.',
+       btn:'Explore the full spectrum →'},
+   jp:{intro:'最後に、誰も教えてくれなかったこと。',
+       title:'ハイチは宣言を読んだ。\nフランスは4万の兵を送った。',
+       body:'1791年、奴隷化されたハイチ人たちはフランスに宣言を突きつけた：「すべての人間は自由に生まれる。」フランスの反応：彼らを再奴隷化するための史上最大の軍事遠征。\n\n全人類スコア：主張82。現実：金がかかると、ほぼゼロ。\n\nこれは7つの物語のうちの1つだ。',
+       btn:'スペクトラムを探索する →'}},
+];
+
+/* ══════════════════════════════════════════════════════════
+   BUILD ENGINE — do not edit below
+══════════════════════════════════════════════════════════ */
+
+const STOP_H = () => window.innerHeight * 1.8;
+let lang = 'en';
+let choiceMade = false;
+const scored = new Set();
+let mapState = '';
+const MAP_VW = 1196, MAP_VH = 992; // Homann map intrinsic dimensions
+
+const main = document.getElementById('main');
+
+/* ── UTILS ── */
+const el = (tag,cls) => { const e=document.createElement(tag); if(cls)e.className=cls; return e; };
+const txt = (e,en,jp) => { e.dataset.en=en||''; e.dataset.jp=jp||''; e.innerHTML=en||''; };
+function svgEl(tag,attrs={}){
+  const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  for(const[k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+  return e;
+}
+
+/* ── BUILD TIMELINE ── */
+const tlEl = document.getElementById('tl');
+CHS.forEach((ch,i) => {
+  const item = el('div','tl-i'); item.id='tl-'+ch.id;
+  const dot = el('div','tl-d'); dot.id='tld-'+ch.id;
+  const lbl = el('span','tl-l'); lbl.id='tll-'+ch.id;
+  txt(lbl, ch.en, ch.jp);
+  item.appendChild(dot); item.appendChild(lbl);
+  if(i < CHS.length-1){
+    const c=el('div','tl-c'); c.id='tlc-'+ch.id;
+    const cf=el('div','tl-cf'); cf.id='tlcf-'+ch.id;
+    c.appendChild(cf); item.appendChild(c);
+  }
+  tlEl.appendChild(item);
+});
+
+/* ── SCORE BLOCK BUILDER ── */
+function mkScoreBlock(key, inclLabel){
+  const d = SCORES[key];
+  const wrap = el('div','sc-block');
+  if(inclLabel){
+    const lbl=el('div','a-fact'); txt(lbl, d.lbl.en, d.lbl.jp); lbl.style.marginBottom='8px';
+    wrap.appendChild(lbl);
+  }
+  // Score axis — correct direction per Trust Spectrum spec
+  const note = el('div','sc-scale-note');
+  txt(note,
+    '← 0 = selfish, unchallengeable · kind, self-doubting = 100 →',
+    '← 0 = 利己的・疑いなし · 善良・自己批判的 = 100 →'
+  );
+  wrap.appendChild(note);
+
+  d.rows.forEach(row => {
+    const r=el('div','sc-row');
+    const ln=el('span','sc-lbl '+row.k);
+    txt(ln, {in:'THEMSELVES',cit:'CITIZENS',hum:'ALL HUMANS'}[row.k],
+            {in:'権力者自身',cit:'市民',hum:'全人類'}[row.k]);
+    const num=el('span','sc-num '+row.k); num.textContent='0'; num.dataset.target=row.v;
+    const trk=el('div','sc-trk');
+    const fill=el('div','sc-fill '+row.k); fill.dataset.target=row.v; trk.appendChild(fill);
+    r.appendChild(ln); r.appendChild(num); r.appendChild(trk);
+    if(row.delta!==undefined){
+      const dEl=el('span','sc-delta '+(row.delta<0?'neg':'pos'));
+      dEl.textContent=(row.delta>0?'+':'')+row.delta; r.appendChild(dEl);
+    }
+    wrap.appendChild(r);
+    // Consequence sentence beneath each bar
+    const sent=el('p','sc-sentence');
+    txt(sent, row.en, row.jp);
+    wrap.appendChild(sent);
+  });
+  return wrap;
+}
+
+/* ── ANNOTATION CARD BUILDER ── */
+function mkCard(stop, scIdx, si){
+  const card = el('div','anno-card'); card.id='card-'+scIdx+'-'+si;
+  const inner = el('div','anno-inner');
+
+  const langData = stop[lang]||stop.en;
+  const jpData   = stop.jp||stop.en;
+  const enData   = stop.en;
+
+  // Tag
+  const tag=el('div','a-tag'); txt(tag, enData.tag, jpData.tag); inner.appendChild(tag);
+
+  // Headline
+  const head=el('h2','a-head');
+  txt(head, enData.h.replace(/\n/g,'<br>'), jpData.h.replace(/\n/g,'<br>'));
+  inner.appendChild(head);
+
+  // Dot defs (before score reveal in Before chapter)
+  if(stop.dotDefs){
+    const dw=el('div','dot-defs');
+    DOT_DEFS.forEach((d,di)=>{
+      const it=el('div','dd-item');
+      const c=el('div','dd-circ '+d.k);
+      const tx=el('div');
+      const nm=el('div','dd-name'); txt(nm,d.en.nm,d.jp.nm);
+      const df=el('div','dd-def'); txt(df,d.en.df,d.jp.df);
+      tx.appendChild(nm); tx.appendChild(df);
+      it.appendChild(c); it.appendChild(tx); dw.appendChild(it);
+    });
+    inner.appendChild(dw);
+  }
+
+  // Body — split into sentences for scroll-reveal
+  if(enData.body && !stop.names){
+    const enSentences = enData.body.split(/(?<=[.!?—])\s+/).filter(Boolean);
+    const jpBody = jpData.body || '';
+    const jpSentences = jpBody.match(/[^。！？]*[。！？]/g) || [jpBody];
+    // Use EN sentence count but cap JP index — never repeat last JP sentence
+    const count = enSentences.length;
+    const bodyWrap = el('div','a-body');
+    enSentences.forEach((sent, si2)=>{
+      const span = el('span','a-sent');
+      span.dataset.en = sent;
+      span.dataset.jp = jpSentences[si2] !== undefined ? jpSentences[si2] : '';
+      span.innerHTML = sent;
+      bodyWrap.appendChild(span);
+    });
+    inner.appendChild(bodyWrap);
+  }
+
+  // Names list
+  if(stop.names){
+    const nl=el('div','names');
+    NAMES.forEach((n,ni)=>{
+      const r=el('div','name-row'+(n.x?' x':'')+(n.hi?' hi':''));
+      r.dataset.nameIdx = ni;
+      const dt=el('span','name-dt'); dt.textContent=n.dt;
+      const nm=el('span','name-nm'); nm.textContent=n.nm;
+      r.appendChild(dt); r.appendChild(nm);
+      if(n.note){const nt=el('span','name-note');nt.textContent='— '+n.note;r.appendChild(nt);}
+      nl.appendChild(r);
+    });
+    inner.appendChild(nl);
+  }
+
+  // Scores — single set
+  if(stop.scores){
+    inner.appendChild(mkScoreBlock(stop.scores, true));
+  }
+
+  // Scores — claimed vs actual comparison (Terror stop)
+  if(stop.scores_compare){
+    // Claimed header
+    const cmpHdr1 = el('div','sc-compare-hdr');
+    cmpHdr1.innerHTML = '<span class="claimed-lbl" data-en="WHAT HE CLAIMED" data-jp="主張">WHAT HE CLAIMED</span>';
+    inner.appendChild(cmpHdr1);
+    inner.appendChild(mkScoreBlock('robespierre_claimed', false));
+
+    const cmpHdr2 = el('div','sc-compare-hdr');
+    cmpHdr2.innerHTML = '<span class="arrow-lbl">↓</span><span class="actual-lbl" data-en="WHAT HE DID · FOUR YEARS LATER" data-jp="四年後の現実">WHAT HE DID · FOUR YEARS LATER</span>';
+    inner.appendChild(cmpHdr2);
+    inner.appendChild(mkScoreBlock('actual', false));
+  }
+
+  // Fact
+  if(enData.fact && !stop.scores){
+    const f=el('p','a-fact'); txt(f, enData.fact, jpData.fact); inner.appendChild(f);
+  }
+
+  card.appendChild(inner);
+  return card;
+}
+
+/* ── BUILD CINEMATIC MAP ──
+   Based on reference war map (france-1792-revolution-in-danger)
+   Homann map 1196×992. Key coordinates derived from reference:
+   Paris:   ~x:686, y:292  (57.4% × 29.4%)
+   Belgium/invasion corridor: top-right, x:780-1100, y:55-320
+   Rhine/Austrian zone: far right, x:980-1160, y:200-600
+   Vendée:  bottom-left interior, x:310-480, y:500-720
+   Expansion zones: beyond all borders after victory
+─────────────────────────────────────────────────── */
+function mkMap(){
+  const ns = 'http://www.w3.org/2000/svg';
+  const VW = 1196, VH = 992;
+
+  const stack = el('div','map-stack'); stack.id='map-stack';
+
+  // Layer 1: map photo
+  const photo = el('img','map-photo');
+  photo.src = './assets/france-map.jpg';
+  photo.alt = 'Homann antique map of France 1720';
+  photo.loading = 'lazy';
+  photo.onerror = () => { photo.src = './assets/valmy.jpg'; };
+  stack.appendChild(photo);
+
+  // Layer 2: SVG overlay
+  const svg = document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox',`0 0 ${VW} ${VH}`);
+  svg.setAttribute('xmlns',ns);
+  svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+  svg.classList.add('map-svg-overlay');
+
+  const defs = document.createElementNS(ns,'defs');
+
+  // Ink-bleed filter for all zones
+  const filt = document.createElementNS(ns,'filter');
+  filt.setAttribute('id','ink-bleed');
+  filt.setAttribute('x','-8%'); filt.setAttribute('y','-8%');
+  filt.setAttribute('width','116%'); filt.setAttribute('height','116%');
+  const turb = document.createElementNS(ns,'feTurbulence');
+  turb.setAttribute('type','turbulence');
+  turb.setAttribute('baseFrequency','0.022 0.038');
+  turb.setAttribute('numOctaves','4');
+  turb.setAttribute('seed','7');
+  turb.setAttribute('result','noise');
+  const disp = document.createElementNS(ns,'feDisplacementMap');
+  disp.setAttribute('in','SourceGraphic');
+  disp.setAttribute('in2','noise');
+  disp.setAttribute('scale','22');
+  disp.setAttribute('xChannelSelector','R');
+  disp.setAttribute('yChannelSelector','G');
+  filt.appendChild(turb); filt.appendChild(disp);
+  defs.appendChild(filt);
+  svg.appendChild(defs);
+
+  /* ── INVASION ZONE ── bright red, NE corner */
+  const invZone = document.createElementNS(ns,'polygon');
+  invZone.setAttribute('id','inv-zone');
+  invZone.setAttribute('points',
+    `${VW},0 ${VW},${VH*0.65} ${VW*0.82},${VH*0.58} ${VW*0.78},${VH*0.44}
+     ${VW*0.72},${VH*0.36} ${VW*0.62},${VH*0.28} ${VW*0.56},${VH*0.22}
+     ${VW*0.68},${VH*0.05} ${VW},0`
+  );
+  invZone.setAttribute('fill','#dd1111');
+  invZone.setAttribute('opacity','0');
+  invZone.setAttribute('filter','url(#ink-bleed)');
+  invZone.style.mixBlendMode = 'multiply';
+  invZone.style.transition = 'opacity .8s ease';
+  svg.appendChild(invZone);
+
+  /* ── INVASION ARROWS — red, pointing SW toward Paris ── */
+  const invArrows = [
+    { id:'iarr-prussia', d:`M ${VW*0.92},${VH*0.12} L ${VW*0.82},${VH*0.22} L ${VW*0.72},${VH*0.30}`,
+      hx:VW*0.72, hy:VH*0.30, hdx:-10, hdy:8 },
+    { id:'iarr-austria', d:`M ${VW*0.96},${VH*0.40} L ${VW*0.84},${VH*0.38} L ${VW*0.74},${VH*0.34}`,
+      hx:VW*0.74, hy:VH*0.34, hdx:-10, hdy:-2 },
+    { id:'iarr-britain', d:`M ${VW*0.38},${VH*0.10} L ${VW*0.48},${VH*0.18} L ${VW*0.57},${VH*0.25}`,
+      hx:VW*0.57, hy:VH*0.25, hdx:9, hdy:7 },
+    { id:'iarr-south', d:`M ${VW*0.90},${VH*0.55} L ${VW*0.80},${VH*0.48} L ${VW*0.72},${VH*0.40}`,
+      hx:VW*0.72, hy:VH*0.40, hdx:-8, hdy:-8 },
+  ];
+  invArrows.forEach(a=>{
+    const path = document.createElementNS(ns,'path');
+    path.setAttribute('id', a.id);
+    path.setAttribute('d', a.d);
+    path.setAttribute('stroke','#cc1111');
+    path.setAttribute('stroke-width','5');
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke-linecap','round');
+    path.setAttribute('stroke-linejoin','round');
+    path.setAttribute('filter','url(#ink-bleed)');
+    path.style.mixBlendMode = 'multiply';
+    path.style.opacity = '0';
+    path.style.strokeDasharray = '260';
+    path.style.strokeDashoffset = '260';
+    path.style.transition = 'opacity .4s ease';
+    svg.appendChild(path);
+    // Arrowhead: tip at (hx,hy), direction given by (hdx,hdy) unit vector
+    const poly = document.createElementNS(ns,'polygon');
+    poly.setAttribute('id', a.id+'-head');
+    const tx=a.hx, ty=a.hy;
+    const len=Math.sqrt(a.hdx*a.hdx+a.hdy*a.hdy)||1;
+    const ux=a.hdx/len, uy=a.hdy/len; // unit forward
+    const px=-uy, py=ux; // perpendicular
+    const sz=16;
+    const pts=`${tx},${ty} ${tx-ux*sz+px*sz*0.5},${ty-uy*sz+py*sz*0.5} ${tx-ux*sz-px*sz*0.5},${ty-uy*sz-py*sz*0.5}`;
+    poly.setAttribute('points', pts);
+    poly.setAttribute('fill','#cc1111');
+    poly.setAttribute('filter','url(#ink-bleed)');
+    poly.style.mixBlendMode = 'multiply';
+    poly.style.opacity = '0';
+    poly.style.transition = 'opacity .3s ease';
+    svg.appendChild(poly);
+  });
+
+  /* ── VICTORY EXPANSION ZONES ──
+     Blue. Start from inside France (where red was) and push past borders.
+     Uses clipPath that grows outward as scroll progresses.
+  */
+
+  // Clip rect for blue zones — starts small (France border), grows outward
+  const vicClipId = 'vic-clip';
+  const vicClip = document.createElementNS(ns,'clipPath');
+  vicClip.setAttribute('id', vicClipId);
+  const vicClipRect = document.createElementNS(ns,'rect');
+  vicClipRect.setAttribute('id','vic-clip-rect');
+  vicClipRect.setAttribute('x', (VW*0.55)+''); // starts at France border
+  vicClipRect.setAttribute('y','0');
+  vicClipRect.setAttribute('width','0');
+  vicClipRect.setAttribute('height', VH+'');
+  vicClip.appendChild(vicClipRect);
+  defs.appendChild(vicClip);
+
+  const expansionZones = [
+    // Full NE zone — covers where red was + beyond into Belgium/Rhine
+    { id:'exp-belgium', pts:`${VW*0.56},0 ${VW},0 ${VW},${VH*0.65} ${VW*0.82},${VH*0.58} ${VW*0.78},${VH*0.44} ${VW*0.72},${VH*0.36} ${VW*0.62},${VH*0.28} ${VW*0.56},${VH*0.22}` },
+    // Rhine deeper east
+    { id:'exp-rhine', pts:`${VW*0.86},${VH*0.20} ${VW},${VH*0.20} ${VW},${VH*0.60} ${VW*0.86},${VH*0.52}` },
+    // Savoy/Nice SE
+    { id:'exp-savoy', pts:`${VW*0.76},${VH*0.63} ${VW*0.90},${VH*0.66} ${VW*0.93},${VH*0.83} ${VW*0.82},${VH*0.89} ${VW*0.74},${VH*0.78}` },
+  ];
+  expansionZones.forEach(ez=>{
+    const p = document.createElementNS(ns,'polygon');
+    p.setAttribute('id', ez.id);
+    p.setAttribute('points', ez.pts);
+    p.setAttribute('fill','#1040aa');
+    p.setAttribute('opacity','0');
+    p.setAttribute('filter','url(#ink-bleed)');
+    p.setAttribute('clip-path',`url(#${vicClipId})`);
+    p.style.mixBlendMode = 'multiply';
+    p.style.transition = 'opacity .6s ease';
+    svg.appendChild(p);
+  });
+
+  /* ── VICTORY ARROWS — blue, pushing outward from France like WWII map ── */
+  const vicArrows = [
+    { id:'varr-ne', d:`M ${VW*0.68},${VH*0.22} L ${VW*0.82},${VH*0.10} L ${VW*0.92},${VH*0.05}`,
+      hx:VW*0.92, hy:VH*0.05, hdx:10, hdy:-5 },
+    { id:'varr-e',  d:`M ${VW*0.78},${VH*0.40} L ${VW*0.90},${VH*0.36} L ${VW*0.98},${VH*0.33}`,
+      hx:VW*0.98, hy:VH*0.33, hdx:8, hdy:-3 },
+    { id:'varr-se', d:`M ${VW*0.76},${VH*0.63} L ${VW*0.87},${VH*0.70} L ${VW*0.92},${VH*0.78}`,
+      hx:VW*0.92, hy:VH*0.78, hdx:5, hdy:8 },
+    { id:'varr-n',  d:`M ${VW*0.62},${VH*0.15} L ${VW*0.70},${VH*0.06} L ${VW*0.76},${VH*0.02}`,
+      hx:VW*0.76, hy:VH*0.02, hdx:6, hdy:-4 },
+  ];
+  vicArrows.forEach(a=>{
+    // Arrow shaft
+    const path = document.createElementNS(ns,'path');
+    path.setAttribute('id', a.id);
+    path.setAttribute('d', a.d);
+    path.setAttribute('stroke','#2255cc');
+    path.setAttribute('stroke-width','5');
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke-linecap','round');
+    path.setAttribute('stroke-linejoin','round');
+    path.setAttribute('filter','url(#ink-bleed)');
+    path.style.mixBlendMode = 'multiply';
+    path.style.opacity = '0';
+    path.style.transition = 'opacity .5s ease';
+    // Compute dash length
+    path.style.strokeDasharray = '280';
+    path.style.strokeDashoffset = '280';
+    svg.appendChild(path);
+
+    // Arrowhead triangle
+    const poly = document.createElementNS(ns,'polygon');
+    poly.setAttribute('id', a.id+'-head');
+    const tx=a.hx, ty=a.hy;
+    const len2=Math.sqrt(a.hdx*a.hdx+a.hdy*a.hdy)||1;
+    const ux2=a.hdx/len2, uy2=a.hdy/len2;
+    const px2=-uy2, py2=ux2;
+    const sz2=16;
+    const pts2=`${tx},${ty} ${tx-ux2*sz2+px2*sz2*0.5},${ty-uy2*sz2+py2*sz2*0.5} ${tx-ux2*sz2-px2*sz2*0.5},${ty-uy2*sz2-py2*sz2*0.5}`;
+    poly.setAttribute('points', pts2);
+    poly.setAttribute('fill','#2255cc');
+    poly.setAttribute('filter','url(#ink-bleed)');
+    poly.style.mixBlendMode = 'multiply';
+    poly.style.opacity = '0';
+    poly.style.transition = 'opacity .4s ease 0.8s';
+    svg.appendChild(poly);
+  });
+
+  /* ── FRENCH FLAG (victory) — bigger, planted near Paris ── */
+  const flagG = document.createElementNS(ns,'g');
+  flagG.setAttribute('id','french-flag');
+  flagG.setAttribute('opacity','0');
+  flagG.style.transition = 'opacity .8s ease';
+  const flagX = Math.round(VW*0.574) + 22;
+  const flagY = Math.round(VH*0.294);
+  const fw=72, fh=48;
+  // Pole
+  const pole = document.createElementNS(ns,'line');
+  pole.setAttribute('x1', flagX+''); pole.setAttribute('y1', (flagY+8)+'');
+  pole.setAttribute('x2', flagX+''); pole.setAttribute('y2', (flagY-fh-2)+'');
+  pole.setAttribute('stroke','rgba(220,200,160,0.95)'); pole.setAttribute('stroke-width','2.5');
+  flagG.appendChild(pole);
+  // Tricolor
+  [['#0032A0',0],['#FFFFFF',fw/3],['#EF4135',fw*2/3]].forEach(([c,ox])=>{
+    const r = document.createElementNS(ns,'rect');
+    r.setAttribute('x',(flagX+ox)+''); r.setAttribute('y',(flagY-fh)+'');
+    r.setAttribute('width',(fw/3+1)+''); r.setAttribute('height',fh+'');
+    r.setAttribute('fill',c); r.setAttribute('opacity','0.92');
+    flagG.appendChild(r);
+  });
+  // Border
+  const fb=document.createElementNS(ns,'rect');
+  fb.setAttribute('x',flagX+''); fb.setAttribute('y',(flagY-fh)+'');
+  fb.setAttribute('width',fw+''); fb.setAttribute('height',fh+'');
+  fb.setAttribute('fill','none'); fb.setAttribute('stroke','rgba(0,0,0,0.4)'); fb.setAttribute('stroke-width','1');
+  flagG.appendChild(fb);
+  svg.appendChild(flagG);
+
+  /* ── ENEMY FLAGS ── Prussia (top-right), Austria (right), Britain (top) ── */
+  function mkFlag(id, x, y, stripes, opacity){
+    const g = document.createElementNS(ns,'g');
+    g.setAttribute('id',id); g.setAttribute('opacity','0');
+    g.style.transition='opacity .6s ease';
+    const efw=52, efh=34;
+    // Pole
+    const ep=document.createElementNS(ns,'line');
+    ep.setAttribute('x1',x+''); ep.setAttribute('y1',(y+6)+'');
+    ep.setAttribute('x2',x+''); ep.setAttribute('y2',(y-efh)+'');
+    ep.setAttribute('stroke','rgba(160,130,90,0.7)'); ep.setAttribute('stroke-width','1.5');
+    g.appendChild(ep);
+    // Flag stripes
+    stripes.forEach((s,si)=>{
+      const r=document.createElementNS(ns,'rect');
+      const sh = efh/stripes.length;
+      r.setAttribute('x',x+''); r.setAttribute('y',(y-efh+si*sh)+'');
+      r.setAttribute('width',efw+''); r.setAttribute('height',(sh+1)+'');
+      r.setAttribute('fill',s); r.setAttribute('opacity','0.88');
+      g.appendChild(r);
+    });
+    // Border
+    const eb=document.createElementNS(ns,'rect');
+    eb.setAttribute('x',x+''); eb.setAttribute('y',(y-efh)+'');
+    eb.setAttribute('width',efw+''); eb.setAttribute('height',efh+'');
+    eb.setAttribute('fill','none'); eb.setAttribute('stroke','rgba(0,0,0,0.35)'); eb.setAttribute('stroke-width','1');
+    g.appendChild(eb);
+    return g;
+  }
+  // Prussia — black/white horizontal stripes
+  const prussiaFlag = mkFlag('flag-prussia', Math.round(VW*0.84), Math.round(VH*0.18), ['#1a1a1a','#e8e0cc','#1a1a1a']);
+  svg.appendChild(prussiaFlag);
+  // Austria — red/white/red horizontal
+  const austriaFlag = mkFlag('flag-austria', Math.round(VW*0.84), Math.round(VH*0.48), ['#CC0000','#F5F0E8','#CC0000']);
+  svg.appendChild(austriaFlag);
+  // Britain — blue/red/blue vertical (simplified union jack feel)
+  const britainFlag = mkFlag('flag-britain', Math.round(VW*0.36), Math.round(VH*0.17), ['#012169','#C8102E','#012169']);
+  svg.appendChild(britainFlag);
+
+  /* ── PARIS DOT + LABELS ── */
+  const PARIS_CX = Math.round(VW*0.574); // 686
+  const PARIS_CY = Math.round(VH*0.294); // 292
+
+  const parisDot = document.createElementNS(ns,'circle');
+  parisDot.setAttribute('cx', PARIS_CX+'');
+  parisDot.setAttribute('cy', PARIS_CY+'');
+  parisDot.setAttribute('r','7');
+  parisDot.setAttribute('class','paris-dot');
+  parisDot.id = 'paris-dot';
+  svg.appendChild(parisDot);
+
+  // Paris label — large, gold, visible
+  const parisLbl = document.createElementNS(ns,'text');
+  parisLbl.setAttribute('x', (PARIS_CX+14)+'');
+  parisLbl.setAttribute('y', (PARIS_CY+6)+'');
+  parisLbl.setAttribute('fill','rgba(220,200,160,0.95)');
+  parisLbl.setAttribute('font-family','Cormorant Garamond, Georgia, serif');
+  parisLbl.setAttribute('font-size','28');
+  parisLbl.setAttribute('font-weight','700');
+  parisLbl.setAttribute('letter-spacing','3');
+  parisLbl.setAttribute('paint-order','stroke');
+  parisLbl.setAttribute('stroke','rgba(0,0,0,0.7)');
+  parisLbl.setAttribute('stroke-width','4');
+  parisLbl.id = 'lbl-paris-svg';
+  parisLbl.textContent = 'PARIS';
+  svg.appendChild(parisLbl);
+
+  const mapLabels = [
+    {id:'lbl-prussia', text:'PRUSSIA', x:Math.round(VW*0.84), y:Math.round(VH*0.08), col:'rgba(180,40,40,0)', size:22},
+    {id:'lbl-austria', text:'AUSTRIA', x:Math.round(VW*0.84), y:Math.round(VH*0.38), col:'rgba(180,40,40,0)', size:22},
+    {id:'lbl-british', text:'BRITAIN', x:Math.round(VW*0.36), y:Math.round(VH*0.07), col:'rgba(180,40,40,0)', size:20},
+    {id:'lbl-expand',  text:'FRANCE EXPANDS →', x:Math.round(VW*0.55), y:Math.round(VH*0.95), col:'rgba(0,80,180,0)', size:18},
+  ];
+  mapLabels.forEach(lb=>{
+    const t = document.createElementNS(ns,'text');
+    t.setAttribute('x', lb.x+''); t.setAttribute('y', lb.y+'');
+    t.setAttribute('fill', lb.col);
+    t.setAttribute('font-family','Cormorant Garamond, Georgia, serif');
+    t.setAttribute('font-size', lb.size+'');
+    t.setAttribute('font-weight','700');
+    t.setAttribute('letter-spacing','2');
+    t.setAttribute('paint-order','stroke');
+    t.setAttribute('stroke','rgba(0,0,0,0.6)');
+    t.setAttribute('stroke-width','3');
+    t.id = lb.id; t.style.transition='fill .7s ease';
+    t.textContent = lb.text;
+    svg.appendChild(t);
+  });
+
+  // Valmy battle star (where the decisive battle happened)
+  // Valmy is ~east-center France, roughly x:830, y:310
+  const valmyStar = document.createElementNS(ns,'text');
+  valmyStar.setAttribute('x', Math.round(VW*0.694)+'');
+  valmyStar.setAttribute('y', Math.round(VH*0.315)+'');
+  valmyStar.setAttribute('fill','rgba(200,184,154,0)');
+  valmyStar.setAttribute('font-size','24');
+  valmyStar.id='lbl-valmy';
+  valmyStar.style.transition='fill .6s ease 1s';
+  valmyStar.textContent='★ Valmy 1792';
+  valmyStar.setAttribute('font-family','Cormorant Garamond, Georgia, serif');
+  svg.appendChild(valmyStar);
+
+  stack.appendChild(svg);
+
+  // Layer 3: tactical vignette
+  const vig = el('div','map-vignette'); stack.appendChild(vig);
+
+  return stack;
+}
+
+/* ── MAIN BUILD ── */
+STORY.forEach((sc, scIdx) => {
+
+  /* FULLSCREEN */
+  if(sc.type==='fullscreen'){
+    const s=el('section','fs'); s.dataset.ch=sc.ch; s.dataset.sci=scIdx;
+    const bg=el('div','fs-bg'); 
+    bg.style.backgroundImage=`url('${sc.bg}')`;
+    s.appendChild(bg);
+
+    // Hook: full-bleed art behind bg
+    if(sc.art){
+      const artDiv=el('div'); artDiv.style.cssText='position:absolute;inset:0;z-index:1;overflow:hidden;';
+      const img=el('img'); img.src=sc.art; img.loading='lazy';
+      img.style.cssText='width:100%;height:100%;object-fit:cover;opacity:0.25;filter:sepia(.4) contrast(.85);';
+      artDiv.appendChild(img); s.appendChild(artDiv);
+    }
+
+    const inner=el('div','fs-inner');
+    inner.style.cssText='position:relative;z-index:10;';
+    const d=sc.en;
+    if(d.ol){const e=el('span','overline sr');e.dataset.d=0;txt(e,d.ol,sc.jp.ol);inner.appendChild(e);}
+    if(d.h){const e=el('h1','h-giant sr');e.dataset.d=1;txt(e,d.h,sc.jp.h);inner.appendChild(e);}
+    if(d.sub){const e=el('p','h-sub sr');e.dataset.d=2;txt(e,d.sub.replace(/\n/g,'<br>'),sc.jp.sub.replace(/\n/g,'<br>'));inner.appendChild(e);}
+    if(d.lines){
+      d.lines.forEach((ln,li)=>{const e=el('p','l-line sr');e.dataset.d=li%5;txt(e,ln,sc.jp.lines[li]);inner.appendChild(e);});
+      // Choice
+      const qp=el('p','l-line sr'); qp.dataset.d=d.lines.length%5; txt(qp,CHOICE.q.en,CHOICE.q.jp); inner.appendChild(qp);
+      const cw=el('div','choice-wrap sr'); cw.dataset.d=(d.lines.length+1)%5;
+      CHOICE.opts.forEach(opt=>{
+        const btn=el('button','ch-opt'); btn.id='co-'+opt.k; btn.onclick=()=>pickChoice(opt.k);
+        const dot=el('div','ch-dot'); dot.style.background=opt.k==='in'?'var(--dot-in)':opt.k==='cit'?'var(--dot-cit)':'var(--dot-hum)';
+        const sp=el('span'); txt(sp,opt.en,opt.jp); btn.appendChild(dot); btn.appendChild(sp); cw.appendChild(btn);
+      });
+      const ans=el('div','ch-ans'); ans.id='ch-ans'; cw.appendChild(ans);
+      inner.appendChild(cw);
+      const lq=el('p','l-q sr'); lq.dataset.d=(d.lines.length+2)%5; txt(lq,d.q,sc.jp.q); inner.appendChild(lq);
+    }
+    s.appendChild(inner);
+    if(sc.scrollHint){
+      const h=el('div','scroll-cue');
+      h.innerHTML='<span data-en="scroll" data-jp="スクロール">scroll</span><div class="sc-line"></div>';
+      s.appendChild(h);
+    }
+    main.appendChild(s);
+
+  /* EXHIBIT */
+  } else if(sc.type==='exhibit'){
+    const ch=el('div','ch'); ch.dataset.ch=sc.ch; ch.dataset.sci=scIdx; ch.dataset.type='exhibit';
+    ch.style.height=(sc.stops.length * STOP_H() + window.innerHeight)+'px';
+
+    const stage=el('div','sticky-stage');
+    const bgDiv=el('div','ch-bg'); bgDiv.style.backgroundImage=`url('${sc.bg}')`;
+    stage.appendChild(bgDiv);
+
+    // Per-stop artifact images — all layered, crossfade via .show class
+    const af=el('div','artifact-frame');
+    const artSrcs = [...new Set(sc.stops.map(s=>s.art).filter(Boolean))];
+    artSrcs.forEach(src=>{
+      const ai=el('img','artifact-img'); ai.src=src; ai.alt='artifact'; ai.loading='lazy';
+      ai.dataset.artSrc=src; af.appendChild(ai);
+    });
+    // Show first art on load
+    if(sc.stops[0]?.art){
+      const first=af.querySelector(`[data-art-src="${sc.stops[0].art}"]`);
+      if(first) first.classList.add('show');
+    }
+
+    // Side images
+    sc.stops.forEach((stop,si)=>{
+      if(!stop.side) return;
+      const img=el('img','side-img side-'+stop.side.pos); 
+      img.src=stop.side.src; img.loading='lazy';
+      img.id='si-'+scIdx+'-'+si; af.appendChild(img);
+    });
+    stage.appendChild(af);
+
+    // Spotlight
+    const sp=el('div','spotlight'); sp.id='sp-'+scIdx; stage.appendChild(sp);
+
+    // Anno cards
+    sc.stops.forEach((stop,si)=>{
+      const layer=el('div','anno-layer'); layer.id='al-'+scIdx+'-'+si;
+      const card=mkCard(stop, scIdx, si); layer.appendChild(card); stage.appendChild(layer);
+    });
+
+    ch.appendChild(stage); main.appendChild(ch);
+
+  /* MAP */
+  } else if(sc.type==='map'){
+    const ch=el('div','ch'); ch.dataset.ch=sc.ch; ch.dataset.sci=scIdx; ch.dataset.type='map';
+    ch.style.height=(sc.stops.length * STOP_H() + window.innerHeight)+'px';
+    const stage=el('div','sticky-stage');
+    const bgDiv=el('div','ch-bg'); bgDiv.style.backgroundImage=`url('${sc.bg}')`;
+    stage.appendChild(bgDiv);
+    const ms=el('div','map-scene'); ms.appendChild(mkMap()); stage.appendChild(ms);
+    sc.stops.forEach((stop,si)=>{
+      const layer=el('div','anno-layer'); layer.id='al-'+scIdx+'-'+si;
+      const card=mkCard(stop, scIdx, si); layer.appendChild(card); stage.appendChild(layer);
+    });
+    ch.appendChild(stage); main.appendChild(ch);
+
+  /* WAR-MIXED: alternates between map view and exhibit painting view */
+  } else if(sc.type==='war-mixed'){
+    const ch=el('div','ch'); ch.dataset.ch=sc.ch; ch.dataset.sci=scIdx; ch.dataset.type='war-mixed';
+    ch.style.height=(sc.stops.length * STOP_H() + window.innerHeight)+'px';
+
+    const stage=el('div','sticky-stage');
+    const bgDiv=el('div','ch-bg'); bgDiv.style.backgroundImage=`url('${sc.bg}')`;
+    stage.appendChild(bgDiv);
+
+    // Map layer — always present, shown/hidden by stop kind
+    const ms=el('div','map-scene'); ms.id='war-map-scene'; ms.appendChild(mkMap()); stage.appendChild(ms);
+
+    // Exhibit artifact frame — for painting stops
+    const af=el('div','artifact-frame'); af.id='war-artifact-frame'; af.style.opacity='0'; af.style.transition='opacity .6s ease';
+    const paintingSrcs = [...new Set(sc.stops.filter(s=>s.kind==='exhibit').map(s=>s.art).filter(Boolean))];
+    paintingSrcs.forEach(src=>{
+      const ai=el('img','artifact-img'); ai.src=src; ai.alt='painting'; ai.loading='lazy';
+      ai.dataset.artSrc=src; af.appendChild(ai);
+    });
+    stage.appendChild(af);
+
+    // Spotlight for exhibit stops
+    const sp=el('div','spotlight'); sp.id='sp-'+scIdx; stage.appendChild(sp);
+
+    // Anno cards
+    sc.stops.forEach((stop,si)=>{
+      const layer=el('div','anno-layer'); layer.id='al-'+scIdx+'-'+si;
+      const card=mkCard(stop, scIdx, si); layer.appendChild(card); stage.appendChild(layer);
+    });
+
+    ch.appendChild(stage); main.appendChild(ch);
+
+  /* HANDOFF */
+  } else if(sc.type==='handoff'){
+    const s=el('section','fs'); s.dataset.ch=sc.ch;
+    const bg=el('div','fs-bg'); bg.style.backgroundImage=`url('${sc.bg}')`; s.appendChild(bg);
+    const inner=el('div','fs-inner'); inner.style.cssText='position:relative;z-index:10;';
+    const d=sc.en;
+    const intr=el('p','sr'); intr.style.cssText='font-family:var(--fm);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1.4rem;';
+    intr.dataset.d=0; txt(intr,d.intro,sc.jp.intro); 
+    const pips=el('div','pips sr'); pips.dataset.d=1;
+    for(let i=0;i<6;i++){const p=el('div','pip'+(i===0?' on':'')); pips.appendChild(p);}
+    const title=el('h2','hf-t sr'); title.dataset.d=2; txt(title,d.title.replace(/\n/g,'<br>'),sc.jp.title.replace(/\n/g,'<br>'));
+    const body=el('p','hf-b sr'); body.dataset.d=3; txt(body,d.body.replace(/\n/g,'<br>'),sc.jp.body.replace(/\n/g,'<br>'));
+    const btn=el('a','go-btn sr'); btn.dataset.d=4; btn.href='#';
+    const bs=el('span'); txt(bs,d.btn,sc.jp.btn); const ba=el('span','go-arr'); ba.textContent='→';
+    btn.appendChild(bs); btn.appendChild(ba);
+    inner.appendChild(intr); inner.appendChild(pips); inner.appendChild(title);
+    inner.appendChild(body); inner.appendChild(btn); s.appendChild(inner); main.appendChild(s);
+  }
+});
+
+/* ══════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+   Heavy museum physics: lerp 0.05, duration 1.8s
+══════════════════════════════════════════════════════════ */
+const lenis = new Lenis({
+  duration: 2.4,
+  easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true,
+  wheelMultiplier: 0.55,
+});
+
+lenis.on('scroll', onScroll);
+
+function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+
+/* ══════════════════════════════════════════════════════════
+   SCROLL HANDLER — scrub-based, tied to position
+══════════════════════════════════════════════════════════ */
+function onScroll({ scroll, limit }){
+  // Progress bar
+  document.getElementById('pb').style.width = (scroll/limit*100)+'%';
+
+  const vh = window.innerHeight;
+  let activeChapter = '';
+
+  // Fullscreen scenes
+  main.querySelectorAll('.fs').forEach(sec => {
+    const top = sec.getBoundingClientRect().top;
+    const bottom = top + sec.offsetHeight;
+    const entering = top < vh*.78 && bottom > vh*.18;
+    sec.querySelectorAll('.sr').forEach(e => {
+      e.classList.toggle('in', entering);
+      if(!entering && bottom < vh*.1) e.classList.add('out');
+      else e.classList.remove('out');
+    });
+    if(top < vh*.65 && bottom > vh*.35) activeChapter = sec.dataset.ch;
+  });
+
+  // Exhibit + map chapters
+  main.querySelectorAll('.ch').forEach(ch => {
+    const rect = ch.getBoundingClientRect();
+    const scrollInCh = -rect.top;
+    const stopH = STOP_H();
+    const stopIdx = Math.max(0, Math.min(Math.floor(scrollInCh / stopH), 10));
+    const sci = parseInt(ch.dataset.sci);
+    const sc = STORY[sci];
+    if(!sc||!sc.stops) return;
+    const clamp = Math.min(stopIdx, sc.stops.length-1);
+
+    // Sub-scroll progress within current stop (0.0 → 1.0)
+    const stopStart = clamp * stopH;
+    const subProgress = Math.max(0, Math.min((scrollInCh - stopStart) / stopH, 1));
+
+    if(rect.top < vh*.6 && rect.bottom > vh*.4) activeChapter = ch.dataset.ch;
+
+    sc.stops.forEach((_,si)=>{
+      const card = document.getElementById('card-'+sci+'-'+si);
+      if(card){
+        const active = si===clamp;
+        card.classList.toggle('on', active);
+        if(active){
+          // FIX 2: Sentence-by-sentence reveal tied to sub-scroll progress
+          const sents = card.querySelectorAll('.a-sent');
+          if(sents.length){
+            sents.forEach((s,i)=>{
+              const threshold = i / (sents.length + 1);
+              s.classList.toggle('in', subProgress > threshold);
+            });
+          }
+          // Names list: reveal one by one with scroll
+          const nameRows = card.querySelectorAll('.name-row');
+          if(nameRows.length){
+            nameRows.forEach((row,ni)=>{
+              const threshold = (ni+1) / (nameRows.length + 2);
+              row.classList.toggle('nm-in', subProgress > threshold);
+            });
+          }
+          const scoreKeys = [];
+          if(sc.stops[si].scores) scoreKeys.push(sc.stops[si].scores);
+          if(sc.stops[si].scores_compare) scoreKeys.push('robespierre_claimed','actual');
+          // Get all sc-block elements in this card — one per score key
+          const scoreBlocks = card.querySelectorAll('.sc-block');
+          scoreKeys.forEach((key,ki)=>{
+            const uid = sci+'-'+si+'-'+key;
+            if(subProgress > 0.1 + ki*0.05) scored.add(uid);
+            if(scored.has(uid)){
+              // Target only the fills/nums inside the matching sc-block
+              const block = scoreBlocks[ki];
+              if(!block) return;
+              SCORES[key].rows.forEach((row,ri)=>{
+                const fill = block.querySelector('.sc-fill.'+row.k);
+                const num  = block.querySelector('.sc-num.'+row.k);
+                const barProgress = Math.max(0, Math.min((subProgress - 0.1 - ki*0.05 - ri*0.08) / 0.35, 1));
+                if(fill) fill.style.width = (barProgress * row.v) + '%';
+                if(num)  num.textContent = Math.round(barProgress * row.v);
+              });
+            }
+          });
+        }
+      }
+    });
+
+    // FIX 1: Per-stop artifact crossfade
+    if(sc.type==='exhibit'){
+      const af = ch.querySelector('.artifact-frame');
+      if(af){
+        const currentArt = sc.stops[clamp]?.art;
+        af.querySelectorAll('.artifact-img').forEach(img=>{
+          img.classList.toggle('show', img.dataset.artSrc === currentArt);
+        });
+      }
+    }
+
+    // War-mixed: toggle between map and painting per stop kind
+    if(sc.type==='war-mixed'){
+      const stop = sc.stops[clamp];
+      const mapScene = ch.querySelector('#war-map-scene');
+      const artFrame = ch.querySelector('#war-artifact-frame');
+      const spEl = document.getElementById('sp-'+sci);
+
+      if(stop.kind==='map'){
+        if(mapScene) mapScene.style.opacity='1';
+        if(artFrame) artFrame.style.opacity='0';
+        if(spEl) spEl.classList.remove('on');
+        setMapState(stop.mapState);
+        // Scrub frontline position directly with scroll progress
+        if(stop.mapState==='invasion' || stop.mapState==='victory'){
+          scrubFrontline(stop.mapState, subProgress);
+        }
+      } else if(stop.kind==='exhibit'){
+        if(mapScene) mapScene.style.opacity='0';
+        if(artFrame){
+          artFrame.style.opacity='1';
+          artFrame.querySelectorAll('.artifact-img').forEach(img=>{
+            img.classList.toggle('show', img.dataset.artSrc === stop.art);
+          });
+        }
+        if(spEl && stop.sp){
+          const s=stop.sp;
+          spEl.style.cssText=`left:calc(${s.x} - ${s.w/2}px);top:calc(${s.y} - ${s.h/2}px);width:${s.w}px;height:${s.h}px;opacity:1;`;
+          spEl.classList.add('on');
+        }
+      }
+    }
+
+    // Spotlight
+    const spEl = document.getElementById('sp-'+sci);
+    if(spEl && sc.stops[clamp]?.sp){
+      const s=sc.stops[clamp].sp;
+      spEl.style.cssText=`left:calc(${s.x} - ${s.w/2}px);top:calc(${s.y} - ${s.h/2}px);width:${s.w}px;height:${s.h}px;opacity:1;`;
+      spEl.classList.add('on');
+    }
+
+    // Side images
+    sc.stops.forEach((stop,si)=>{
+      if(!stop.side) return;
+      const img = document.getElementById('si-'+sci+'-'+si);
+      if(img) img.classList.toggle('show', si===clamp);
+    });
+
+    // Map state
+    if(sc.type==='map' && sc.stops[clamp]){
+      setMapState(sc.stops[clamp].mapState);
+    }
+  });
+
+  updateTL(activeChapter);
+}
+
+/* ── MAP STATE + SCRUB ── */
+function setMapState(state){
+  if(state===mapState) return;
+  mapState=state;
+
+  const setFill = (id,val)=>{ const e=document.getElementById(id); if(e) e.setAttribute('fill',val); };
+  const setOp   = (id,val)=>{ const e=document.getElementById(id); if(e) e.setAttribute('opacity',val); };
+
+  setOp('inv-zone','0');
+  ['exp-belgium','exp-rhine','exp-savoy'].forEach(id=>setOp(id,'0'));
+  ['lbl-prussia','lbl-austria','lbl-british'].forEach(id=>setFill(id,'rgba(180,40,40,0)'));
+  setFill('lbl-expand','rgba(0,80,180,0)');
+  setFill('lbl-valmy','rgba(200,184,154,0)');
+  // Reset arrows
+  ['varr-ne','varr-e','varr-se','varr-n','iarr-prussia','iarr-austria','iarr-britain','iarr-south'].forEach(id=>{
+    const e=document.getElementById(id); if(e){e.style.opacity='0';e.style.strokeDashoffset='280';}
+    const h=document.getElementById(id+'-head'); if(h) h.style.opacity='0';
+  });
+  // Reset flags
+  ['french-flag','flag-prussia','flag-austria','flag-britain'].forEach(id=>{
+    const e=document.getElementById(id); if(e) e.setAttribute('opacity','0');
+  });
+  // Reset blue clip
+  const vcr=document.getElementById('vic-clip-rect'); if(vcr){vcr.setAttribute('x',(MAP_VW*0.55)+'');vcr.setAttribute('width','0');}
+  const pd=document.getElementById('paris-dot'); if(pd) pd.setAttribute('class','paris-dot');
+  const pl=document.getElementById('lbl-paris-svg'); if(pl) pl.setAttribute('fill','rgba(220,200,160,0.95)');
+  const ms=document.getElementById('map-stack'); if(ms) ms.style.transform='scale(1)';
+
+  if(state==='invasion'){
+    setOp('inv-zone','0.32');
+    setTimeout(()=>{ ['lbl-prussia','lbl-austria','lbl-british'].forEach(id=>setFill(id,'rgba(180,40,40,0.95)')); },600);
+    setTimeout(()=>{
+      ['flag-prussia','flag-austria','flag-britain'].forEach(id=>{ const e=document.getElementById(id); if(e) e.setAttribute('opacity','0.9'); });
+    },900);
+    if(ms) ms.style.transform='scale(1.07)';
+  }
+
+  if(state==='victory'){
+    // Start with full red — scrubFrontline will animate it away
+    setOp('inv-zone','0.42');
+    ['lbl-prussia','lbl-austria','lbl-british'].forEach(id=>setFill(id,'rgba(180,40,40,0.45)'));
+    ['flag-prussia','flag-austria','flag-britain'].forEach(id=>{ const e=document.getElementById(id); if(e) e.setAttribute('opacity','0.45'); });
+    // Invasion arrows hidden at start of victory
+    ['iarr-prussia','iarr-austria','iarr-britain','iarr-south'].forEach(id=>{
+      const e=document.getElementById(id); if(e){e.style.opacity='0';}
+      const h=document.getElementById(id+'-head'); if(h) h.style.opacity='0';
+    });
+    if(ms) ms.style.transform='scale(1.0)';
+  }
+}
+
+function scrubFrontline(state, progress){
+  const invZone=document.getElementById('inv-zone');
+  const parisDot=document.getElementById('paris-dot');
+  const parisLbl=document.getElementById('lbl-paris-svg');
+  if(!invZone) return;
+
+  if(state==='invasion'){
+    invZone.setAttribute('opacity',(progress*0.35).toFixed(3));
+    const danger=progress>0.6;
+    if(parisDot) parisDot.setAttribute('class',danger?'paris-dot danger':'paris-dot');
+    if(parisLbl) parisLbl.setAttribute('fill',danger?'rgba(220,60,60,0.95)':'rgba(220,200,160,0.95)');
+    if(progress>0.2){
+      const a=Math.min((progress-0.2)/0.3,1);
+      ['lbl-prussia','lbl-austria','lbl-british'].forEach(id=>{
+        const e=document.getElementById(id); if(e) e.setAttribute('fill',`rgba(180,40,40,${a.toFixed(2)})`);
+      });
+    }
+    // Invasion arrows draw in staggered
+    ['iarr-prussia','iarr-austria','iarr-britain','iarr-south'].forEach((id,i)=>{
+      const arrEl=document.getElementById(id);
+      const headEl=document.getElementById(id+'-head');
+      const arrP=Math.max(0,Math.min((progress-0.1-i*0.1)/0.4,1));
+      if(arrEl){ arrEl.style.opacity=arrP>0?'0.85':'0'; arrEl.style.strokeDashoffset=(260*(1-arrP))+''; }
+      if(headEl) headEl.style.opacity=arrP>0.8?'0.85':'0';
+    });
+  }
+
+  if(state==='victory'){
+    const redOp = Math.max(0, 0.42 - progress * 0.84);
+    invZone.setAttribute('opacity', redOp.toFixed(3));
+    // Enemy labels and flags fade out
+    ['lbl-prussia','lbl-austria','lbl-british'].forEach(id=>{
+      const e=document.getElementById(id);
+      if(e) e.setAttribute('fill',`rgba(180,40,40,${Math.max(0,0.45-progress*0.9).toFixed(2)})`);
+    });
+    ['flag-prussia','flag-austria','flag-britain'].forEach(id=>{
+      const e=document.getElementById(id);
+      if(e) e.setAttribute('opacity', Math.max(0, 0.45-progress*0.9).toFixed(2));
+    });
+
+    const blueStart = 0.15;
+    if(progress > blueStart){
+      const blueP = Math.min((progress - blueStart) / 0.7, 1);
+      const clipX = MAP_VW * 0.55;
+      const clipW = blueP * MAP_VW * 0.5;
+      const vcr = document.getElementById('vic-clip-rect');
+      if(vcr){ vcr.setAttribute('x', clipX+''); vcr.setAttribute('width', clipW+''); }
+
+      const blueOp = Math.min(blueP * 0.55, 0.42).toFixed(3);
+      ['exp-belgium','exp-rhine','exp-savoy'].forEach(id=>{
+        const e=document.getElementById(id); if(e) e.setAttribute('opacity', blueOp);
+      });
+
+      // Arrows staggered
+      ['varr-ne','varr-e','varr-se','varr-n'].forEach((id,i)=>{
+        const arrEl = document.getElementById(id);
+        const headEl = document.getElementById(id+'-head');
+        const arrP = Math.max(0, Math.min((blueP - i*0.12) / 0.4, 1));
+        if(arrEl){ arrEl.style.opacity = arrP > 0 ? '0.9' : '0'; arrEl.style.strokeDashoffset = (280*(1-arrP))+''; }
+        if(headEl) headEl.style.opacity = arrP > 0.7 ? '0.9' : '0';
+      });
+
+      // France flag appears when blue is well advanced
+      const flagEl = document.getElementById('french-flag');
+      if(flagEl) flagEl.setAttribute('opacity', blueP > 0.6 ? Math.min((blueP-0.6)/0.3, 0.95).toFixed(2) : '0');
+
+      const lblExp=document.getElementById('lbl-expand');
+      if(lblExp) lblExp.setAttribute('fill',`rgba(60,120,220,${Math.min(blueP*1.2,0.9).toFixed(2)})`);
+      const lblVal=document.getElementById('lbl-valmy');
+      if(lblVal) lblVal.setAttribute('fill',`rgba(200,184,154,${Math.min(blueP*1.5,0.85).toFixed(2)})`);
+    }
+  }
+} // end scrubFrontline (now scroll-driven in onScroll, countUp kept for reference) ── */
+function countUp(el,target,dur){
+  const t0=performance.now();
+  (function f(now){
+    const p=Math.min((now-t0)/dur,1);
+    el.textContent=Math.round((1-Math.pow(1-p,3))*target);
+    if(p<1) requestAnimationFrame(f); else el.textContent=target;
+  })(t0);
+}
+
+/* ── TIMELINE ── */
+let lastCh='';
+function updateTL(active){
+  if(active===lastCh) return; lastCh=active;
+  const idx=CHS.findIndex(c=>c.id===active);
+  CHS.forEach((ch,i)=>{
+    document.getElementById('tld-'+ch.id)?.classList.toggle('on',i===idx);
+    document.getElementById('tld-'+ch.id)?.classList.toggle('done',i<idx);
+    document.getElementById('tll-'+ch.id)?.classList.toggle('on',i===idx);
+    const cf=document.getElementById('tlcf-'+ch.id);
+    if(cf) cf.style.height=i<idx?'100%':i===idx?'50%':'0%';
+  });
+}
+
+/* ── LANGUAGE ── */
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('on',b.textContent.trim()===(l==='en'?'EN':'日本語')));
+  document.querySelectorAll('[data-en]').forEach(e=>{
+    const v=e.getAttribute('data-'+l); if(v!==null) e.innerHTML=v;
+  });
+}
+
+/* ── CHOICE ── */
+function pickChoice(k){
+  if(choiceMade) return; choiceMade=true;
+  const opt=CHOICE.opts.find(o=>o.k===k);
+  CHOICE.opts.forEach(o=>{
+    const b=document.getElementById('co-'+o.k); if(!b) return;
+    if(o.correct) b.classList.add('correct');
+    else if(o.k!==k) b.classList.add('dimmed');
+    b.style.pointerEvents='none';
+  });
+  const ans=document.getElementById('ch-ans');
+  if(ans){ans.textContent=opt.ans[lang]||opt.ans.en; ans.classList.add('show');}
+}
+
+/* ── RESIZE ── */
+window.addEventListener('resize',()=>{
+  main.querySelectorAll('.ch[data-type]').forEach(ch=>{
+    const sci=parseInt(ch.dataset.sci);
+    const sc=STORY[sci];
+    if(sc?.stops) ch.style.height=(sc.stops.length*STOP_H()+window.innerHeight)+'px';
+  });
+});
+/* ── INIT ── */
+window.addEventListener('load',()=>{
+  setLang('en');
+  // First scene in
+  setTimeout(()=>{
+    document.querySelectorAll('.fs:first-child .sr').forEach((e,i)=>{
+      setTimeout(()=>e.classList.add('in'),500+i*180);
+    });
+  },200);
+  // Mark score blocks with their key for detection
+  document.querySelectorAll('.sc-block').forEach(b=>{
+    const card=b.closest('.anno-card'); if(!card) return;
+    const id=card.id; // card-scIdx-si
+    const parts=id.split('-');
+    const sci=parseInt(parts[1]); const si=parseInt(parts[2]);
+    const sc=STORY[sci]; if(!sc?.stops?.[si]?.scores) return;
+    b.dataset.scoreKey=sc.stops[si].scores;
+  });
+});
+</script>
+
+<!--
+════════════════════════════════════════════════
+  GITHUB PAGES DEPLOYMENT GUIDE
+  3 Steps to a Live Shareable URL
+════════════════════════════════════════════════
+
+STEP 1 — Create a GitHub account and new repository
+  1. Go to github.com and sign up (free)
+  2. Click the "+" icon → "New repository"
+  3. Name it: trust-spectrum
+  4. Set to Public
+  5. Click "Create repository"
+
+STEP 2 — Upload your file
+  1. On your new repository page, click "Add file" → "Upload files"
+  2. Drag trust-spectrum-cinematic.html into the upload box
+  3. IMPORTANT: Rename it to index.html before uploading
+     (or rename after: click the file → pencil icon → change filename)
+  4. Click "Commit changes"
+
+STEP 3 — Enable GitHub Pages
+  1. Go to repository Settings → Pages (in the left sidebar)
+  2. Under "Source", select: Deploy from a branch
+  3. Under "Branch", select: main → / (root) → Save
+  4. Wait 60 seconds, then refresh the page
+  5. Your live URL appears at the top:
+     https://YOUR-USERNAME.github.io/trust-spectrum/
+
+DONE. Share that URL with anyone. It works on any device.
+
+────────────────────────────────────────────────
+BONUS: Replacing Unsplash images with real historical paintings
+────────────────────────────────────────────────
+Once on GitHub Pages, Wikimedia Commons images load fine.
+Replace the Unsplash URLs in the BG and ART objects with:
+
+  hook:   https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Une_ex%C3%A9cution_capitale%2C_place_de_la_R%C3%A9volution.jpg/1280px-Une_ex%C3%A9cution_capitale%2C_place_de_la_R%C3%A9volution.jpg
+  before: https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Louis_XVI_of_France.jpg/800px-Louis_XVI_of_France.jpg
+  dream:  https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Declaration_of_Human_Rights.jpg/800px-Declaration_of_Human_Rights.jpg
+  terror: https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Robespierre.jpg/800px-Robespierre.jpg
+
+════════════════════════════════════════════════
+-->
+</body>
+</html>
